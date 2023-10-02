@@ -1,20 +1,18 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors
 
-void main() {
-  runApp(const MainApp());
+import 'package:flutter/material.dart';
+import 'package:tmshub/src/screens/splash_screen.dart';
+
+void main(){
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      home: SplashScreen(),
     );
   }
 }
