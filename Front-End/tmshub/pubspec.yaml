@@ -12,6 +12,7 @@ dependencies:
   flutter_native_splash: ^1.2.2
   animated_splash_screen: ^1.2.0
   flutter_bloc: ^7.2.1
+  auto_size_text: 
 
   cupertino_icons: ^1.0.2
   hexcolor: ^3.0.1
