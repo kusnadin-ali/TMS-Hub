@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/models/office.dart';
 import 'package:tmshub/src/services/attendance_services.dart';
 
@@ -28,21 +29,20 @@ class _LiveAttendPage1State extends State<LiveAttendPage1> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 24, right: 24),
-      child: Center(
-          child: officeList?.isEmpty == false
-              ? buttonDropdownWidget()
-              : Text("tidak ada data")),
-    );
+    print(officeSelected);
+    return officeList?.isEmpty == false ? pageWidget() : Text("tidak ada data");
   }
 
   Widget buttonDropdownWidget() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(width: 3, color: Colors.blue))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(width: 5, color: Colors.blue)),
+        filled: true,
+        fillColor: Colors.white,
+        hoverColor: Colors.white
+      ),
       value: officeSelected,
       items: officeList
               ?.map((e) => DropdownMenuItem<String>(
@@ -59,6 +59,71 @@ class _LiveAttendPage1State extends State<LiveAttendPage1> {
           officeSelected = item;
         });
       },
+      hint: Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Lokasi Kerja",
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: "Montserrat",
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget pageWidget() {
+    return Padding(
+      padding: EdgeInsets.only(left: 24, right: 24),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start, // Menentukan teks sebelah kiri
+        children: [
+          SizedBox(
+            height: 8,
+          ),
+          Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Silahkan Pilih Lokasi Kerja",
+                style: TextStyle(
+                    color: HexColor("#565656"),
+                    fontFamily: "Montserrat",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700),
+              )),
+          SizedBox(
+            height: 5,
+          ),
+          buttonDropdownWidget(),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: HexColor("#FF9F43"), // Warna border #FF9F43
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: HexColor("#ffd1c7"), // Warna background #ffd1c7
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 9, top: 5, bottom: 5, right: 9),
+                child: Text(
+                  "Silahkan pilih lokasi kerja Anda, untuk dapat menggunakan fitur live attendance.",
+                  style: TextStyle(
+                    color: HexColor("#FF9F43"),
+                    fontFamily: "Montserrat",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.italic
+                  ),
+                ),
+              ))
+        ],
+      ),
     );
   }
 }

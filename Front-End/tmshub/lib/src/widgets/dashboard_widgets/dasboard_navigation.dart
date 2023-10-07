@@ -93,9 +93,10 @@ class DasboardNavigationWidget extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => destination),
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context){
+                  return destination;
+                })
               );
             },
             child: Ink(
