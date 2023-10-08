@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/models/office.dart';
+import 'package:tmshub/src/screens/presensi/presensi_map_screen.dart';
 import 'package:tmshub/src/services/attendance_services.dart';
 
 class LiveAttendPage1 extends StatefulWidget {
@@ -58,6 +59,11 @@ class _LiveAttendPage1State extends State<LiveAttendPage1> {
         setState(() {
           officeSelected = item;
         });
+        Navigator.of(context).push(
+                MaterialPageRoute(builder: (context){
+                  return PresensiMapScreen(loc: item as String);
+                })
+              );
       },
       hint: Align(
         alignment: Alignment.center,
