@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:tmshub/src/screens/splash_screen.dart';
-import 'package:tmshub/src/screens/annual_leave_screen.dart';
+import 'package:tmshub/src/screens/cuti/cuti_detail_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: SplashScreen(),
-      home: AnnualLeaveScreen(),
+      home: CutiDetailScreen(),
     );
   }
 }

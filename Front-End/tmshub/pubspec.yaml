@@ -12,9 +12,10 @@ dependencies:
   flutter_native_splash: ^1.2.2
   animated_splash_screen: ^1.2.0
   flutter_bloc: ^7.2.1
-
+  flutter_map: ^5.0.0
   cupertino_icons: ^1.0.2
   hexcolor: ^3.0.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -31,3 +32,5 @@ flutter:
         - asset: assets/fonts/Montserrat-Medium.ttf
         - asset: assets/fonts/Montserrat-Bold.ttf
           weight: 500
+        - asset: assets/fonts/Montserrat-Italic.ttf
+          style: italic

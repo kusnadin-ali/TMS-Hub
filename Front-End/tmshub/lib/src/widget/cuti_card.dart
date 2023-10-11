@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class AnnualLeaveCard extends StatelessWidget {
+class CutiCard extends StatelessWidget {
   final String tittle, status, date;
 
-  const AnnualLeaveCard(
+  const CutiCard(
       {Key? key,
       required this.tittle,
       required this.status,

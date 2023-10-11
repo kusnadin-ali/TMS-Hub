@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/widget/annual_leave.dart';
+import 'package:tmshub/src/widget/cuti_card.dart';
 import 'package:tmshub/src/widget/custom_tittle_bar.dart';
 
-class AnnualLeaveScreen extends StatefulWidget {
+class CutiScreen extends StatefulWidget {
   @override
-  _AnnualLeaveScreenState createState() => _AnnualLeaveScreenState();
+  _CutiScreenState createState() => _CutiScreenState();
 }
 
-class _AnnualLeaveScreenState extends State<AnnualLeaveScreen> {
+class _CutiScreenState extends State<CutiScreen> {
   late bool error = false, notFound = false;
   var items = List.empty();
 
@@ -22,7 +22,10 @@ class _AnnualLeaveScreenState extends State<AnnualLeaveScreen> {
         child: Column(children: [
           Padding(
             padding: EdgeInsets.only(top: 14, left: 10, right: 10),
-            child: CustomTittleBar(tittle: "Pengajuan Cuti"),
+            child: CustomTittleBar(
+              tittle: "Pengajuan Cuti",
+              onPress: backToDashboard(),
+            ),
           ),
 
           //ERROR
@@ -73,7 +76,7 @@ class _AnnualLeaveScreenState extends State<AnnualLeaveScreen> {
                   children: [
                     // for (var item in items) Text(item),
                     for (var i = 0; i < 10; i++)
-                      AnnualLeaveCard(
+                      CutiCard(
                         tittle: "Cuti",
                         status: "PENGAJUAN HRD",
                         date: "27 Feb 2023",
@@ -100,3 +103,5 @@ Widget _getFAB(con1, con2) {
     return Container();
   }
 }
+
+backToDashboard() {}
