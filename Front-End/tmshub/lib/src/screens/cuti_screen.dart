@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/widget/cuti_card.dart';
-import 'package:tmshub/src/widget/custom_tittle_bar.dart';
+import 'package:tmshub/src/screens/cuti/cuti_add_screen.dart';
+import 'package:tmshub/src/widgets/cuti_widgets/cuti_card.dart';
+import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
+import 'package:tmshub/src/widgets/error.dart';
 
 class CutiScreen extends StatefulWidget {
+  const CutiScreen({Key? key}) : super(key: key);
   @override
   _CutiScreenState createState() => _CutiScreenState();
 }
@@ -17,56 +20,24 @@ class _CutiScreenState extends State<CutiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _getFAB(error, notFound),
+      floatingActionButton: _getFAB(context, error, notFound),
       body: SingleChildScrollView(
         child: Column(children: [
           Padding(
             padding: EdgeInsets.only(top: 14, left: 10, right: 10),
             child: CustomTittleBar(
               tittle: "Pengajuan Cuti",
-              onPress: backToDashboard(),
+              onPress: () {
+                Navigator.pop(context);
+              },
             ),
           ),
 
           //ERROR
-          if (error)
-            Column(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 100),
-                child: Text(
-                  "Oops !",
-                  style: TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: HexColor("#EA5455")),
-                ),
-              ),
-              Image(image: AssetImage("error.png"), height: 300),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text(
-                  "Terjadi Kesalahan",
-                  style: TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: 18,
-                      color: HexColor("#A09C9C")),
-                ),
-              ),
-            ]),
+          if (error) errorMistakes(),
 
           //Data Tidak ditemukan
-          if (notFound)
-            Column(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 100),
-                child: Image(image: AssetImage("dataNotFound.png")),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 14),
-                child: Text("Data Tidak Ditemukan"),
-              ),
-            ]),
+          if (notFound) errorNotFound(),
 
           //list cuti
           if (!error && !notFound)
@@ -74,7 +45,7 @@ class _CutiScreenState extends State<CutiScreen> {
                 padding: EdgeInsets.only(top: 30),
                 child: Column(
                   children: [
-                    // for (var item in items) Text(item),
+                    // items.map((e) => e),
                     for (var i = 0; i < 10; i++)
                       CutiCard(
                         tittle: "Cuti",
@@ -89,10 +60,13 @@ class _CutiScreenState extends State<CutiScreen> {
   }
 }
 
-Widget _getFAB(con1, con2) {
+Widget _getFAB(context, con1, con2) {
   if (!con1 && !con2) {
     return FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CutiAddScreen()));
+        },
         backgroundColor: HexColor("#537FE7"),
         isExtended: false,
         child: Icon(

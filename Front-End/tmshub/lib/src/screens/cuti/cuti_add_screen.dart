@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
-import 'package:tmshub/src/widget/custom_tittle_bar.dart';
+import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
 
 class CutiAddScreen extends StatefulWidget {
   @override
@@ -48,9 +48,10 @@ class _CutiAddState extends State<CutiAddScreen> {
               padding:
                   EdgeInsets.only(top: 14, left: 10, right: 10, bottom: 20),
               child: CustomTittleBar(
-                tittle: "Permintaan Pengajuan Cuti",
-                onPress: backToAnnualLeave(),
-              ),
+                  tittle: "Permintaan Pengajuan Cuti",
+                  onPress: () {
+                    Navigator.pop(context);
+                  }),
             ),
             Form(
               child: Padding(

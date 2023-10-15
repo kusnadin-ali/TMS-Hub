@@ -10,7 +10,8 @@ class CutiCard extends StatelessWidget {
       {Key? key,
       required this.tittle,
       required this.status,
-      required this.date});
+      required this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,6 @@ class CutiCard extends StatelessWidget {
                   SizedBox(height: 4),
                   Text(
                     status,
-                    // textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w500,
@@ -62,7 +62,6 @@ class CutiCard extends StatelessWidget {
                   SizedBox(height: 4),
                   Text(
                     date,
-                    // textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w500,

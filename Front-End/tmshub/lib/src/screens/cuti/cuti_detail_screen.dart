@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/widget/custom_tittle_bar.dart';
+import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
 
 class CutiDetailScreen extends StatelessWidget {
   const CutiDetailScreen({Key? key}) : super(key: key);
@@ -67,233 +67,40 @@ class CutiDetailScreen extends StatelessWidget {
                         color: Colors.black,
                       ),
                       SizedBox(height: 12),
-
-                      //Nama
-                      Row(
-                        children: [
-                          Icon(Icons.person, size: 32),
-                          SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Nama",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: HexColor("#3D3D3D"),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Dimas Tri Aditya",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#6E6E6E"),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      cutiDetailCard(
+                          tittle: "Nama",
+                          content: "Dimas Tri Aditya",
+                          icon: Icons.person),
                       SizedBox(height: 18),
-
-                      //Mulai Cuti
-                      Row(
-                        children: [
-                          Icon(Icons.calendar_month, size: 32),
-                          SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Mulai Cuti",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: HexColor("#3D3D3D"),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "27 Feb 2023",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#6E6E6E"),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      cutiDetailCard(
+                          tittle: "Mulai Cuti",
+                          content: "27 Feb 2023",
+                          icon: Icons.calendar_month),
                       SizedBox(height: 18),
-
-                      //Selesai Cuti
-                      Row(
-                        children: [
-                          Icon(Icons.event_available, size: 32),
-                          SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Selesai Cuti",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: HexColor("#3D3D3D"),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "30 Feb 2023",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#6E6E6E"),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      cutiDetailCard(
+                          tittle: "Selesai Cuti",
+                          content: "30 Feb 2023",
+                          icon: Icons.event_available),
                       SizedBox(height: 18),
-
-                      //Disetujui oleh
-                      Row(
-                        children: [
-                          Icon(Icons.person, size: 32),
-                          SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Disetujui Oleh",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: HexColor("#3D3D3D"),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Grandi Ekabuana",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#6E6E6E"),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      cutiDetailCard(
+                          tittle: "Disetujui Oleh",
+                          content: "Grandi Ekabuana",
+                          icon: Icons.person),
                       SizedBox(height: 18),
-
-                      Row(
-                        children: [
-                          Icon(Icons.beach_access, size: 32),
-                          SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Jenis Cuti",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: HexColor("#3D3D3D"),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Acara Keluarga",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#6E6E6E"),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      cutiDetailCard(
+                          tittle: "Jenis Cuti",
+                          content: "Acara Keluarga",
+                          icon: Icons.beach_access),
                       SizedBox(height: 18),
-
-                      Row(
-                        children: [
-                          Icon(Icons.menu, size: 32),
-                          SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Keterangan",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: HexColor("#3D3D3D"),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Acara Keluarga",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#6E6E6E"),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      cutiDetailCard(
+                          tittle: "Keterangan",
+                          content: "Acara Keluarga",
+                          icon: Icons.menu),
                       SizedBox(height: 18),
-
-                      Row(
-                        children: [
-                          Icon(Icons.calendar_today, size: 32),
-                          SizedBox(width: 18),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Sisa Cuti",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: HexColor("#3D3D3D"),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "10 Hari",
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: HexColor("#6E6E6E"),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      cutiDetailCard(
+                          tittle: "Sisa Cuti",
+                          content: "10 Hari",
+                          icon: Icons.calendar_today),
                     ],
                   ),
                 ))
@@ -302,4 +109,38 @@ class CutiDetailScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget cutiDetailCard(
+    {required String tittle, required String content, required var icon}) {
+  return Row(
+    children: [
+      Icon(icon, size: 32),
+      SizedBox(width: 18),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            tittle,
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: HexColor("#3D3D3D"),
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            content,
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: HexColor("#6E6E6E"),
+            ),
+          ),
+        ],
+      )
+    ],
+  );
 }
