@@ -4,8 +4,8 @@ class PresensiModel {
   final String namaUser;
   final DateTime checkIn;
   final DateTime checkOut;
-  final String mapsCheckin;
-  final String mapsCheckout;
+  final String? mapsCheckin;
+  final String? mapsCheckout;
 
   const PresensiModel(
       {required this.idPresensi,
@@ -17,13 +17,14 @@ class PresensiModel {
       required this.mapsCheckout});
 
   factory PresensiModel.formJson(Map<String, dynamic> json) {
+    print("model");
     return PresensiModel(
-        idPresensi: json['idPresensi'],
-        idUser: json['idUser'],
-        namaUser: json['namaUser'],
-        checkIn: json['checkIn'],
-        checkOut: json['checkOut'],
-        mapsCheckin: json['mapsCheckin'],
-        mapsCheckout: json['mapsCheckout']);
+        idPresensi: json['id_presensi'],
+        idUser: json['id_user'],
+        namaUser: json['nama_user'],
+        checkIn: DateTime.parse(json['check_in']),
+        checkOut: DateTime.parse(json['check_out']),
+        mapsCheckin: json['maps_checkin'],
+        mapsCheckout: json['maps_checkout']);
   }
 }

@@ -13,6 +13,7 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   final LatLng centerPoint = LatLng(-6.88055, 107.53841);
+  
 
   // Radius dalam meter (20 km)
   final double radius = 30;
