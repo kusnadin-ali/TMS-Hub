@@ -17,7 +17,6 @@ class PresensiModel {
       required this.mapsCheckout});
 
   factory PresensiModel.formJson(Map<String, dynamic> json) {
-    print("model");
     return PresensiModel(
         idPresensi: json['id_presensi'],
         idUser: json['id_user'],
