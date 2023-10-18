@@ -1,3 +1,3 @@
 library globals;
 
-String urlAPI = 'http://10.10.10.48:8000/api';
+String urlAPI = 'http://172.168.101.191:8000/api';
