@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class MapWidget extends StatefulWidget {
   const MapWidget({Key? key, required this.latitudeOffice, required this.longtitudeOffice}) : super(key: key);
@@ -26,6 +27,9 @@ class _MapWidgetState extends State<MapWidget> {
 
   Future<LatLng> _getCurrentLocation() async {
     final locationData = await location.getLocation();
+    globals.locationNow = "${locationData.latitude}, ${locationData.longitude}";
+    globals.latitudeNow = locationData.latitude??0.0;
+    globals.longtitudeNow = locationData.longitude??0.0;
     return LatLng(
       locationData.latitude ?? 0.0,
       locationData.longitude ?? 0.0,

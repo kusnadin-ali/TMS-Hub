@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:tmshub/src/models/perusahaan_model.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
-import 'package:tmshub/src/models/presensi_model.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<PerusahaanModel>> getAllCompany() async {
