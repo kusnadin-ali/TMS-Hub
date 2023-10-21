@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Presensi
 Route::get('/presensi', [PresensiController::class, 'index']);
 Route::get('/presensi/user/{userId}', [PresensiController::class, 'byUser']);
+Route::get('/presensi-today/user/{userId}', [PresensiController::class, 'getPresensiToday']);
+Route::post('/presensi/attend', [PresensiController::class, 'presensi']);
 
 // Perusahaan
 Route::get('/perusahaan', [PerusahaanController::class, 'index']);
