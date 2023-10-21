@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:tmshub/src/models/office.dart';
-import 'package:tmshub/src/utils/data_utils.dart';
+import 'package:tmshub/src/utils/api_utils.dart';
 
 Future<List<Office>> fetchDataOffice() async {
   final jsonString = await loadOfficeData();
