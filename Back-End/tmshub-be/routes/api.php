@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// User
+Route::get('/users', [UserController::class, 'index']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
 
 // Presensi
 Route::get('/presensi', [PresensiController::class, 'index']);
