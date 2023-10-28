@@ -1,12 +1,14 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/dasboard_navigation.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/visi_misi_card.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print(globals.userLogin!.toString());
     return Scaffold(
         body: SingleChildScrollView(
           child: Column(

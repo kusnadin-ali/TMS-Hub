@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_print, sort_child_properties_last, unnecessary_string_interpolations, avoid_init_to_null, library_private_types_in_public_api
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_print, sort_child_properties_last, unnecessary_string_interpolations, avoid_init_to_null, library_private_types_in_public_api, unnecessary_brace_in_string_interps
 
 import 'dart:async';
 import 'dart:math';
