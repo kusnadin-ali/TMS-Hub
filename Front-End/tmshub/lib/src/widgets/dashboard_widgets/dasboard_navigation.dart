@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/cuti_screen.dart';
 import 'package:tmshub/src/screens/pengembalianDana_screen.dart';
-import 'package:tmshub/src/screens/penggajian_screen.dart';
+import 'package:tmshub/src/screens/payroll/penggajian_screen.dart';
 import 'package:tmshub/src/screens/presensi/presensi_screen.dart';
 
 class DasboardNavigationWidget extends StatelessWidget {
