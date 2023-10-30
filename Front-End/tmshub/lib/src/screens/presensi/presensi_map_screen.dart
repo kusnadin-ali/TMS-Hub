@@ -34,7 +34,7 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
   void initState() {
     initializeDateFormatting();
     super.initState();
-    fetchPresensiToday(globals.userId).then((value) {
+    fetchPresensiToday().then((value) {
       if (value.isEmpty) {
         print(value.toString());
       } else {
@@ -305,7 +305,7 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
               ? null
               : () {
                   Map<String, dynamic> request = {
-                    'id_user': globals.userId,
+                    'id_user': globals.userLogin!.idUser,
                     'check_in': currentTime.toString(),
                     'check_out': currentTime.toString(),
                     'maps_checkin': globals.locationNow,
@@ -342,7 +342,7 @@ class _PresensiMapScreenState extends State<PresensiMapScreen> {
               ? null
               : () {
                   Map<String, dynamic> request = {
-                    'id_user': globals.userId,
+                    'id_user': globals.userLogin!.idUser,
                     'check_in': currentTime.toString(),
                     'check_out': currentTime.toString(),
                     'maps_checkin': globals.locationNow,

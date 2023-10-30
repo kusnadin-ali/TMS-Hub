@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:tmshub/src/screens/dashboard_screen.dart';
 import 'package:tmshub/src/screens/login_register/register_screen.dart';
+import 'package:tmshub/src/services/pegawai_services.dart';
 import 'package:tmshub/src/services/user_services.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
@@ -141,10 +143,10 @@ class _LoginScreenState extends State<LoginScreen> {
           print("click");
           if (emailController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Kolom Email tidak boleh kosong!")));   
+                SnackBar(content: Text("Kolom Email tidak boleh kosong!")));
           } else if (passwordController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Kolom Password tidak boleh kosong!")));
+                SnackBar(content: Text("Kolom Password tidak boleh kosong!")));
           } else {
             loginMethod();
           }
@@ -170,22 +172,30 @@ class _LoginScreenState extends State<LoginScreen> {
           emailUser: value['email_user'],
           passwordUser: "*******",
           role: 1);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CustomDialog(
-              title: "Sukses Login",
-              message: "Berhasil login!",
-              type: "success");
-        },
-      );
-      Future.delayed(Duration(seconds: 5), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) {
-              return DashboardScreen();
-            }),
+      getPegawaiAPI(value['id_user']).then((p) {
+        if (p['statusCode'] == 404) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(p['message'])));
+        } else if (p['statusCode'] == 200) {
+          globals.pegawaiLogin = new PegawaiModel(idPegawai: p['id_pegawai'], idUser: p['id_user'], fotoProfil: p['foto_profil'], alamatPegawai: p['alamat_pegawai'], nohpPegawai: p['nohp_pegawai'], nip: p['nip'], idDivisi: p['id_divisi'], divisi: p['divisi']);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialog(
+                  title: "Sukses Login",
+                  message: "Berhasil login!",
+                  type: "success");
+            },
           );
-        });
+          Future.delayed(Duration(seconds: 5), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return DashboardScreen();
+              }),
+            );
+          });
+        }
+      });
     }).catchError((error) {
       showDialog(
         context: context,

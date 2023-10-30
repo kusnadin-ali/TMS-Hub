@@ -20,9 +20,9 @@ Future<List<PresensiModel>> fetchPresensiByUser(int userId) async {
   }
 }
 
-Future<Map<String, dynamic>> fetchPresensiToday(int userId) async {
+Future<Map<String, dynamic>> fetchPresensiToday() async {
   final response = await http
-      .get(Uri.parse(globals.urlAPI + '/presensi-today/user/$userId'));
+      .get(Uri.parse(globals.urlAPI + '/presensi-today/user/${globals.userLogin!.idUser}'));
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
@@ -33,6 +33,7 @@ Future<Map<String, dynamic>> fetchPresensiToday(int userId) async {
 }
 
 Future<Map<String, dynamic>> attendUser(Map<String, dynamic> request) async {
+  print(request.entries);
   final response = await http.post(
     Uri.parse(globals.urlAPI + '/presensi/attend'),
     headers: {
