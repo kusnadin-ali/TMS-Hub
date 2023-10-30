@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/models/penggajian_model.dart';
+import 'package:tmshub/src/screens/payroll/detail_penggajian_screen.dart';
 import 'package:tmshub/src/services/penggajian_services.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 
@@ -63,9 +64,7 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
           child: cardPayroll(
-            month: "Januari 2023",
-            amount: "${penggajian.gajiPokok}",
-            status: penggajian.statusGaji,
+            pData: penggajian
           ),
         );
       }).toList(),
@@ -73,50 +72,70 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
   }
 
   Widget cardPayroll({
-    required String month,
-    required String amount,
-    required String status,
+    required PenggajianModel pData
   }) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 21),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              month,
-              style: TextStyle(
-                  color: HexColor("#3D3D3D"),
-                  fontFamily: "Montserrat",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Rp. ${amount}",
-              style: TextStyle(
-                  color: HexColor("#A8AAAE"),
-                  fontFamily: "Montserrat",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              status,
-              style: TextStyle(
-                  color: HexColor("#38D32A"),
-                  fontFamily: "Montserrat",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
-            )
-          ],
+      child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+              onTap: () {
+                // print("click");
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context){
+                    return DetailPenggajianScreen(penggajianModel: pData);
+                  })
+                );
+              },
+              child: Ink(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(11),
+                    topRight: Radius.circular(11),
+                    bottomLeft: Radius.circular(11),
+                    bottomRight: Radius.circular(11),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 21),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pData.keterangan,
+                        style: TextStyle(
+                            color: HexColor("#3D3D3D"),
+                            fontFamily: "Montserrat",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Rp. ${pData.gajiPokok}",
+                        style: TextStyle(
+                            color: HexColor("#A8AAAE"),
+                            fontFamily: "Montserrat",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        pData.statusGaji,
+                        style: TextStyle(
+                            color: HexColor("#38D32A"),
+                            fontFamily: "Montserrat",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  ),
+                ),
+              )),
         ),
-      ),
       decoration: BoxDecoration(
           color: HexColor("#f1f7fb"), borderRadius: BorderRadius.circular(15)),
     );
@@ -129,13 +148,17 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/no_content.png'),
-          SizedBox(height: 15,),
-          Text("Tidak ada data.",style: TextStyle(
-              color: HexColor("#A09C9C"),
-              fontFamily: "Montserrat",
-              fontSize: 18,
-              fontWeight: FontWeight.w600
-            ),)
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "Tidak ada data.",
+            style: TextStyle(
+                color: HexColor("#A09C9C"),
+                fontFamily: "Montserrat",
+                fontSize: 18,
+                fontWeight: FontWeight.w600),
+          )
         ],
       ),
     ));
@@ -148,13 +171,17 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/404.png'),
-          SizedBox(height: 15,),
-          Text("Tidak ada data.",style: TextStyle(
-              color: HexColor("#A09C9C"),
-              fontFamily: "Montserrat",
-              fontSize: 18,
-              fontWeight: FontWeight.w600
-            ),)
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "Tidak ada data.",
+            style: TextStyle(
+                color: HexColor("#A09C9C"),
+                fontFamily: "Montserrat",
+                fontSize: 18,
+                fontWeight: FontWeight.w600),
+          )
         ],
       ),
     ));
