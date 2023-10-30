@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\UserController;
@@ -34,3 +36,11 @@ Route::post('/presensi/attend', [PresensiController::class, 'presensi']);
 
 // Perusahaan
 Route::get('/perusahaan', [PerusahaanController::class, 'index']);
+
+//pegawai
+Route::get('/pegawai/{userId}', [PegawaiController::class, 'getPegawai']);
+Route::get('/pegawai/image/{pegawaiId}', [PegawaiController::class, 'getPhotoByPegawaiId']);
+Route::post('/pegawai/update-profile-picture', [PegawaiController::class, 'imageStore']);
+
+//penggajian
+Route::get('/penggajian/{userId}', [PenggajianController::class, 'getAllPayRollByUser']);

@@ -27,8 +27,6 @@ class PresensiController extends Controller
         $presensi = Presensi::where('id_user',$userId)
         ->whereDate('check_in', $today) 
         ->get();
-        error_log($userId." ".$today);
-        error_log($presensi);
         if($presensi->isEmpty()){
             $presensi = null;
         }else{

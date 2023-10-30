@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pegawai;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,17 @@ class UserController extends Controller
             $data['password_user'] = md5($data['password_user']);
             $data['role'] = 1;
             $user = User::create($data);
+
+            $dataPegawai = [
+                'id_user' => $user['id_user'],
+                'foto_profil' => null,
+                'alamat_pegawai' => null,
+                'nohp_pegawai' => null,
+                'nip' => null,
+                'id_divisi' => null,
+            ];
+
+            $pegawai = Pegawai::create($dataPegawai);
     
             return response()->json($user, 201); // 201 Created
         } catch (\Illuminate\Validation\ValidationException $e) {
