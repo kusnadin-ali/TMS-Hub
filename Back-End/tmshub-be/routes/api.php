@@ -4,6 +4,7 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\ReimburseController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,3 +45,9 @@ Route::post('/pegawai/update-profile-picture', [PegawaiController::class, 'image
 
 //penggajian
 Route::get('/penggajian/{userId}', [PenggajianController::class, 'getAllPayRollByUser']);
+
+//reimburse
+Route::get('/reimburse/{userId}', [ReimburseController::class, 'getAllReimburseByUser']);
+Route::get('/reimburse/lampiran/{id_reimburse}', [ReimburseController::class, 'showLampiranById']);
+Route::post('/reimburse/lampiran', [ReimburseController::class, 'storeLampiranReimburseById']);
+Route::post('/reimburse/create', [ReimburseController::class, 'storeReimburseByUser']);
