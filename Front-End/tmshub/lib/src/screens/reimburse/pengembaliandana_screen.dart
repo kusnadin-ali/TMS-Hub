@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/models/reimburse_model.dart';
+import 'package:tmshub/src/screens/reimburse/reimburse_detail_screen.dart';
 import 'package:tmshub/src/services/reimburse_service.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
@@ -54,54 +55,86 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Column(
-          children: listReimburse!.map((e)  {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: cardContent(title: "PENGEMBALIAN DANA", status: e.statusReimburse, dateTime: e.tanggalReimburse),
-            );
-          }).toList(),
-        ),
+        children: listReimburse!.map((e) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    print("click");
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return ReimburseDetailScreen(reimburse: e,);
+                    }));
+                  },
+                  child: Ink(
+                    child: cardContent(
+                        title: "PENGEMBALIAN DANA",
+                        status: e.statusReimburse,
+                        dateTime: e.tanggalReimburse),
+                  ),
+                )),
+          );
+        }).toList(),
+      ),
     );
   }
 
-  Widget cardContent({required String title, required String status, required DateTime dateTime}) {
+  Widget cardContent(
+      {required String title,
+      required String status,
+      required DateTime dateTime}) {
     String formattedDate = DateFormat('d MMMM y').format(dateTime);
     return Container(
       // padding: EdgeInsets.symmetric(horizontal: ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           boxDollar(),
           SizedBox(
             width: 16,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${title}",
-                style: TextStyle(
-                    color: HexColor("#3D3D3D"),
-                    fontFamily: "Montserrat",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text(
-                "${status}",
-                style: TextStyle(
-                    color: HexColor("#A8AAAE"),
-                    fontFamily: "Montserrat",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500),
-              ),
-              Text(
-                "${formattedDate}",
-                style: TextStyle(
-                    color: HexColor("#565656"),
-                    fontFamily: "Montserrat",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500),
-              ),
-            ],
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${title}",
+                      style: TextStyle(
+                          color: HexColor("#3D3D3D"),
+                          fontFamily: "Montserrat",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      "${status}",
+                      style: TextStyle(
+                          color: HexColor("#A8AAAE"),
+                          fontFamily: "Montserrat",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      "${formattedDate}",
+                      style: TextStyle(
+                          color: HexColor("#565656"),
+                          fontFamily: "Montserrat",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            Icons.chevron_right,
+            color: HexColor("#3D3D3D"),
+            size: 25,
           )
         ],
       ),
@@ -122,7 +155,7 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
     );
   }
 
- Widget noContent() {
+  Widget noContent() {
     return Expanded(
         child: Center(
       child: Column(
@@ -167,5 +200,4 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
       ),
     ));
   }
-
 }

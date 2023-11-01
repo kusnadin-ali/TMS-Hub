@@ -6,6 +6,7 @@ class ReimburseModel {
   final String? lampiran;
   final String statusReimburse;
   final int? idAdmin;
+  final String? namaAdmin;
 
   ReimburseModel({
     required this.idReimburse,
@@ -15,6 +16,7 @@ class ReimburseModel {
     required this.lampiran,
     required this.statusReimburse,
     required this.idAdmin,
+    required this.namaAdmin
   });
 
   factory ReimburseModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class ReimburseModel {
       lampiran: json['lampiran'],
       statusReimburse: json['status_reimburse'],
       idAdmin: json['id_admin'],
+      namaAdmin: json['nama_admin']
     );
   }
 
