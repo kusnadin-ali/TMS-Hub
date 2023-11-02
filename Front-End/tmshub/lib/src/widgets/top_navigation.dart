@@ -29,8 +29,7 @@ class _TopNavigationState extends State<TopNavigation> {
                     },
                     child: Ink(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                      ),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Padding(
                         padding: EdgeInsets.only(top: 5, bottom: 5),
                         child: Icon(

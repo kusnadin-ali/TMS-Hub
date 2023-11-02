@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CutiController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PresensiController;
 use Illuminate\Http\Request;
@@ -16,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // Presensi
 Route::get('/presensi', [PresensiController::class, 'index']);
@@ -26,3 +27,11 @@ Route::get('/presensi/user/{userId}', [PresensiController::class, 'byUser']);
 
 // Perusahaan
 Route::get('/perusahaan', [PerusahaanController::class, 'index']);
+
+//Cuti
+Route::controller(CutiController::class)->group(function(){
+    Route::get('/cuti/user/{userId}', 'findByUser');
+    Route::get('/cuti/{cutiId}', 'getDetailCuti');
+    Route::post('/cuti/add', 'addCuti');
+    Route::get('/cutis/{userId}', 'getAddData');
+});

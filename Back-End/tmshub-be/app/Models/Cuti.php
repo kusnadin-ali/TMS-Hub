@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Cuti extends Model
 {
@@ -21,4 +22,14 @@ class Cuti extends Model
         'status_cuti',
         'id_admin'
     ];
+
+    public function user() : HasOne
+    {
+        return $this->hasOne(User::class, 'id_user');
+    }
+
+    public function admin() : HasOne
+    {
+        return $this->hasOne(User::class, 'id_user', 'id_admin'); 
+    }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:tmshub/src/screens/profile_screen.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/dasboard_navigation.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/visi_misi_card.dart';
 
@@ -84,14 +85,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/profile.png',
-                            width: 90,
-                            height: 90,
-                            fit: BoxFit.cover,
+                      InkWell(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileScreen())),
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/profile.png',
+                              width: 90,
+                              height: 90,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       )
@@ -103,7 +110,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           DasboardNavigationWidget(),
           // visi misi
           VisiMisiCard(),
-          SizedBox(height: 15,)
+          SizedBox(
+            height: 15,
+          )
         ],
       )),
     ));
