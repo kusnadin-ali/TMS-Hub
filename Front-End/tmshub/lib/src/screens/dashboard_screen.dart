@@ -1,24 +1,21 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, avoid_print, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
 import 'package:tmshub/src/screens/profile_screen.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/dasboard_navigation.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/visi_misi_card.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
-class DashboardScreen extends StatefulWidget {
-  @override
-  _DashboardScreenState createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
+class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    print(globals.userLogin!.toString());
+    print(globals.pegawaiLogin!.toString());
+    return Scaffold(
       body: SingleChildScrollView(
-          child: Column(
-        children: [
-          Container(
+        child: Column(
+          children: [
+            Container(
               width: MediaQuery.of(context).size.width,
               height: 200,
               padding: const EdgeInsets.all(10),
@@ -58,7 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'zerf dex'.toUpperCase(),
+                              '${globals.userLogin!.namaUser}'.toUpperCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -67,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              'Admin Office',
+                              '${globals.pegawaiLogin!.divisi}',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -76,7 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '023129090',
+                              '${globals.pegawaiLogin!.nip == null ? globals.pegawaiLogin!.nip : '-'}',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontFamily: 'Montserrat',
@@ -85,36 +82,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ],
                         ),
                       ),
-                      InkWell(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfileScreen())),
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/profile.png',
-                              width: 90,
-                              height: 90,
-                              fit: BoxFit.cover,
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: ClipOval(
+                          child: Image.network(
+                            globals.urlAPI + globals.pegawaiLogin!.fotoProfil!,
+                            width: 90,
+                            height: 90,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       )
                     ],
                   )
                 ],
-              )),
-          // Card Dasboard
-          DasboardNavigationWidget(),
-          // visi misi
-          VisiMisiCard(),
-          SizedBox(
-            height: 15,
-          )
-        ],
-      )),
-    ));
+              ),
+            ),
+            // Card Dasboard
+            DasboardNavigationWidget(),
+            // visi misi
+            VisiMisiCard(),
+            SizedBox(
+              height: 15,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/cuti_screen.dart';
-import 'package:tmshub/src/screens/pengembalianDana_screen.dart';
-import 'package:tmshub/src/screens/penggajian_screen.dart';
-import 'package:tmshub/src/screens/presensi_screen.dart';
+import 'package:tmshub/src/screens/payroll/penggajian_screen.dart';
+import 'package:tmshub/src/screens/presensi/presensi_screen.dart';
+import 'package:tmshub/src/screens/reimburse/pengembaliandana_screen.dart';
 
 class DasboardNavigationWidget extends StatelessWidget {
   const DasboardNavigationWidget({Key? key}) : super(key: key);
@@ -93,9 +93,10 @@ class DasboardNavigationWidget extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => destination),
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context){
+                  return destination;
+                })
               );
             },
             child: Ink(

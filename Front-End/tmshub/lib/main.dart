@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:tmshub/src/screens/profile_screen.dart';
 import 'package:tmshub/src/screens/splash_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  initializeDateFormatting('id_ID', null);
   runApp(MyApp());
 }
 
