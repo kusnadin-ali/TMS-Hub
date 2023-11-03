@@ -28,6 +28,13 @@ class ReimburseController extends Controller
             ->get()
             ->map(function ($reimburse) {
                 $reimburse['lampiran'] = '/reimburse/lampiran/' . $reimburse['id_reimburse'];
+                
+                if($reimburse['id_admin'] !=null){
+                    $user = User::find($reimburse['id_admin']);
+                    $reimburse['nama_admin'] = $user->nama_user;
+                }else{
+                    $reimburse['nama_admin'] = '-';
+                }
                 return $reimburse;
             });
 
