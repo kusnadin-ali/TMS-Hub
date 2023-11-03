@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/models/reimburse_model.dart';
+import 'package:tmshub/src/screens/reimburse/add_reimburse_screen.dart';
 import 'package:tmshub/src/screens/reimburse/reimburse_detail_screen.dart';
 import 'package:tmshub/src/services/reimburse_service.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
@@ -36,6 +37,16 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
       body: Column(
         children: [TopNavigation(title: "Pengembalian Dana"), content()],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("object");
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return AddReimburseScreen();
+          }));
+        },
+        tooltip: 'Add Reimburse',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -65,7 +76,9 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
                     print("click");
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return ReimburseDetailScreen(reimburse: e,);
+                      return ReimburseDetailScreen(
+                        reimburse: e,
+                      );
                     }));
                   },
                   child: Ink(

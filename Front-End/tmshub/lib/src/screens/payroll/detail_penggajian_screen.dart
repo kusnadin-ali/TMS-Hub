@@ -329,4 +329,5 @@ class DetailPenggajianScreen extends StatelessWidget {
       ],
     );
   }
+
 }

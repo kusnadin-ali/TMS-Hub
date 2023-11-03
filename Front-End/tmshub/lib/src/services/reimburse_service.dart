@@ -20,3 +20,21 @@ Future<List<ReimburseModel>> getAllReimburseByUserAPI(int userId) async {
     throw Exception('Failed to load Reimburse');
   }
 }
+
+Future<Map<String, dynamic>> createReimburseAPI(Map<String, dynamic> request) async {
+  print(request.entries);
+  final response = await http.post(
+    Uri.parse(globals.urlAPI + '/reimburse/create'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(request),
+  );
+
+  if (response.statusCode == 201) {
+    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    return jsonResponse;
+  } else {
+    throw Exception('Gagal menambahkan Reimburse');
+  }
+}
