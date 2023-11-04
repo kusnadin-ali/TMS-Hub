@@ -24,6 +24,7 @@ class ReimburseController extends Controller
                 'keterangan',
                 'status_reimburse',
                 'id_admin',
+                'amount'
             )
             ->get()
             ->map(function ($reimburse) {
@@ -90,6 +91,7 @@ class ReimburseController extends Controller
             'id_user' => 'required',
             'tanggal_reimburse' => 'required',
             'keterangan' => 'required',
+            'amount' => 'required'
         ]);
 
         $reimburse = new Reimburse();
@@ -98,6 +100,7 @@ class ReimburseController extends Controller
         $reimburse->tanggal_reimburse = $request->input('tanggal_reimburse');
         $reimburse->keterangan = $request->input('keterangan');
         $reimburse->status_reimburse = "PENDING";
+        $reimburse->amount = $request->input('amount');
 
         $reimburse->save();
 
