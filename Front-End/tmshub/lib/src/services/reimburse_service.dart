@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
 import 'package:tmshub/src/models/reimburse_model.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
@@ -38,3 +39,22 @@ Future<Map<String, dynamic>> createReimburseAPI(Map<String, dynamic> request) as
     throw Exception('Gagal menambahkan Reimburse');
   }
 }
+
+Future<String> storeLampiranReimburseAPI(Map<String, String> req, XFile? imageFile) async {
+  var request = http.MultipartRequest('POST', Uri.parse(globals.urlAPI + '/reimburse/lampiran'));
+
+  if (imageFile != null) {
+    request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+  }
+
+  request.fields.addAll(req);
+
+  final response = await request.send();
+
+  if (response.statusCode == 201) {
+    return "Berhasil";
+  } else {
+    throw Exception('Gagal mengupload gambar');
+  }
+}
+

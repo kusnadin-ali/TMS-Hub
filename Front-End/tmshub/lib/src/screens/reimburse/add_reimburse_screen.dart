@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, unnecessary_brace_in_string_interps, sized_box_for_whitespace, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tmshub/src/services/reimburse_service.dart';
+import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
@@ -18,6 +20,7 @@ class AddReimburseScreen extends StatefulWidget {
 class _AddReimburseScreenState extends State<AddReimburseScreen> {
   final namaController = TextEditingController();
   final keteranganController = TextEditingController();
+  final amountController = TextEditingController();
   final dateController = TextEditingController();
   final imageController = TextEditingController();
   XFile? imageLampiran;
@@ -25,6 +28,7 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
 
   @override
   void initState() {
+    namaController.text = globals.userLogin!.namaUser;
     dateController.text = "";
     imageController.text = "";
     super.initState();
@@ -35,7 +39,7 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
     return Scaffold(
       body: Column(
         children: [
-          TopNavigation(title: "Pengembalian Danas"),
+          TopNavigation(title: "Pengembalian Dana"),
           Expanded(
               child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -61,6 +65,7 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
       children: [
         // nama input
         inputColumn(
+            isReadOnly: true,
             title: "Nama Pegawai",
             editController: namaController,
             inputPlaceholder: "Enter your name."),
@@ -68,7 +73,12 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
             title: "Tanggal",
             editController: dateController,
             inputPlaceholder: "Tanggal"),
+        inputAmountColumn(
+            title: "Amount",
+            editController: amountController,
+            inputPlaceholder: "Amount"),
         inputColumn(
+            isReadOnly: false,
             title: "Keterangan",
             editController: keteranganController,
             inputPlaceholder: "Keterangan"),
@@ -87,35 +97,38 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
             child: ElevatedButton(
                 onPressed: () {
                   print("click!!!!");
-                  Map<String, dynamic> request = {
-                    'id_user': globals.userLogin!.idUser,
-                    'tanggal_reimburse': dateController.text,
-                    'keterangan': keteranganController.text
-                  };
+                  if (checkInput()) {
+                    Map<String, dynamic> request = {
+                      'id_user': globals.userLogin!.idUser,
+                      'tanggal_reimburse': dateController.text,
+                      'keterangan': keteranganController.text,
+                      'amount': amountController.text.replaceAll(',', '')
+                    };
 
-                  createReimburseAPI(request).then((value) => print('berhasil'));
+                    createReimburseAPI(request).then((value) {
+                      print(value['id_reimburse']);
+                      Map<String, String> req = {
+                        'id_reimburse': value['id_reimburse'].toString()
+                      };
+                      storeLampiranReimburseAPI(req, imageLampiran!)
+                          .then((value2) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomDialog(
+                                title: "Berhasil",
+                                message: "Berhasil membuat reimburse!",
+                                type: "success");
+                          },
+                        );
+                      });
+                      Navigator.of(context).pop(true);
+                    });
+                  }
                 },
                 child: Text("Submit Pengemblian dana")),
           ),
         )
-        // imageLampiran != null
-        //     ? Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 20),
-        //         child: ClipRRect(
-        //           borderRadius: BorderRadius.circular(8),
-        //           child: Image.file(
-        //             //to show image, you type like this.
-        //             File(imageLampiran!.path),
-        //             fit: BoxFit.cover,
-        //             width: MediaQuery.of(context).size.width,
-        //             height: 300,
-        //           ),
-        //         ),
-        //       )
-        //     : Text(
-        //         "No Image",
-        //         style: TextStyle(fontSize: 20),
-        //       )
       ],
     );
   }
@@ -168,7 +181,54 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
   Widget inputColumn(
       {required String title,
       required TextEditingController editController,
+      required String inputPlaceholder,
+      required bool isReadOnly}) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "${title}",
+              style: TextStyle(
+                color: HexColor("#565656"),
+                fontSize: 14,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: TextField(
+            readOnly: isReadOnly,
+            controller: editController,
+            decoration: InputDecoration(
+              hintText: '${inputPlaceholder}',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget inputAmountColumn(
+      {required String title,
+      required TextEditingController editController,
       required String inputPlaceholder}) {
+    // Define an input formatter to allow only numeric input
+    final currencyFormatter = FilteringTextInputFormatter.digitsOnly;
+
+    // Define a function to format the input with commas every 3 digits
+    String formatAmount(String value) {
+      final numberFormat = NumberFormat.decimalPattern();
+      final parsedValue = int.tryParse(value.replaceAll(',', '')) ?? 0;
+      return numberFormat.format(parsedValue);
+    }
+
     return Column(
       children: [
         Padding(
@@ -193,7 +253,20 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
             decoration: InputDecoration(
               hintText: '${inputPlaceholder}',
               border: OutlineInputBorder(),
+              prefixText: "RP. ",
             ),
+            inputFormatters: [currencyFormatter],
+            onChanged: (value) {
+              // Update the text with formatted input
+              final formattedValue = formatAmount(value);
+              if (value != formattedValue) {
+                editController.value = editController.value.copyWith(
+                  text: formattedValue,
+                  selection:
+                      TextSelection.collapsed(offset: formattedValue.length),
+                );
+              }
+            },
           ),
         ),
       ],
@@ -318,5 +391,27 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
         ),
       ),
     );
+  }
+
+  bool checkInput() {
+    bool isValid = true;
+    if (dateController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Date tidak boleh kosong!")));
+      isValid = false;
+    } else if (amountController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Amount tidak boleh kosong!")));
+      isValid = false;
+    } else if (keteranganController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Keterangan tidak boleh kosong!")));
+      isValid = false;
+    } else if (imageController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kolom Lampiran tidak boleh kosong!")));
+      isValid = false;
+    }
+    return isValid;
   }
 }
