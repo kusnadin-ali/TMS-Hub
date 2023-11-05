@@ -18,7 +18,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   hexcolor: ^3.0.1
   intl: ^0.18.1
-  auto_size_text: 
   dio: 
   dotted_border:
   latlong2: ^0.9.0
@@ -26,7 +25,6 @@ dependencies:
   http: ^1.1.0
   provider: 
   permission_handler: ^11.0.1
-  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

@@ -52,6 +52,7 @@ class _ProfilCardState extends State<ProfilCard> {
             Align(
                 alignment: AlignmentDirectional.bottomEnd,
                 child: FloatingActionButton(
+                  heroTag: "fabcustom",
                   isExtended: true,
                   onPressed: () {
                     Navigator.push(
