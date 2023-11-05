@@ -18,5 +18,6 @@ class Reimburse extends Model
         'lampiran',
         'status_reimburse',
         'id_admin',
+        'amount'
     ];
 }

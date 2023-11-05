@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\CutiController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\ReimburseController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,12 +25,33 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// User
+Route::get('/users', [UserController::class, 'index']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+
 // Presensi
 Route::get('/presensi', [PresensiController::class, 'index']);
 Route::get('/presensi/user/{userId}', [PresensiController::class, 'byUser']);
+Route::get('/presensi-today/user/{userId}', [PresensiController::class, 'getPresensiToday']);
+Route::post('/presensi/attend', [PresensiController::class, 'presensi']);
 
 // Perusahaan
 Route::get('/perusahaan', [PerusahaanController::class, 'index']);
+
+//pegawai
+Route::get('/pegawai/{userId}', [PegawaiController::class, 'getPegawai']);
+Route::get('/pegawai/image/{pegawaiId}', [PegawaiController::class, 'getPhotoByPegawaiId']);
+Route::post('/pegawai/update-profile-picture', [PegawaiController::class, 'imageStore']);
+
+//penggajian
+Route::get('/penggajian/{userId}', [PenggajianController::class, 'getAllPayRollByUser']);
+
+//reimburse
+Route::get('/reimburse/{userId}', [ReimburseController::class, 'getAllReimburseByUser']);
+Route::get('/reimburse/lampiran/{id_reimburse}', [ReimburseController::class, 'showLampiranById']);
+Route::post('/reimburse/lampiran', [ReimburseController::class, 'storeLampiranReimburseById']);
+Route::post('/reimburse/create', [ReimburseController::class, 'storeReimburseByUser']);
 
 //Cuti
 Route::controller(CutiController::class)->group(function(){
