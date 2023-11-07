@@ -6,7 +6,7 @@ import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/models/user_model.dart';
 
 // String urlAPI = 'http://192.168.0.103:8000/api';
-String urlAPI = 'http://10.1.78.216:8000/api';
+String urlAPI = 'http://172.168.101.152:8000/api';
 
 // int userId = 0;
 
