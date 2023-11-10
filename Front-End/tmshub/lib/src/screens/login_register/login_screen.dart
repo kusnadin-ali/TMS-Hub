@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, avoid_print, unnecessary_new
 
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/models/pegawai_model.dart';
@@ -8,8 +9,8 @@ import 'package:tmshub/src/screens/dashboard_screen.dart';
 import 'package:tmshub/src/screens/login_register/register_screen.dart';
 import 'package:tmshub/src/services/pegawai_services.dart';
 import 'package:tmshub/src/services/user_services.dart';
-import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,6 +22,12 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // checkLoginStatus();
+  }
 
   @override
   void dispose() {
@@ -172,12 +179,21 @@ class _LoginScreenState extends State<LoginScreen> {
           emailUser: value['email_user'],
           passwordUser: "*******",
           role: 1);
+
       getPegawaiAPI(value['id_user']).then((p) {
         if (p['statusCode'] == 404) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(p['message'])));
         } else if (p['statusCode'] == 200) {
-          globals.pegawaiLogin = new PegawaiModel(idPegawai: p['id_pegawai'], idUser: p['id_user'], fotoProfil: p['foto_profil'], alamatPegawai: p['alamat_pegawai'], nohpPegawai: p['nohp_pegawai'], nip: p['nip'], idDivisi: p['id_divisi'], divisi: p['divisi']);
+          globals.pegawaiLogin = new PegawaiModel(
+              idPegawai: p['id_pegawai'],
+              idUser: p['id_user'],
+              fotoProfil: p['foto_profil'],
+              alamatPegawai: p['alamat_pegawai'],
+              nohpPegawai: p['nohp_pegawai'],
+              nip: p['nip'],
+              idDivisi: p['id_divisi'],
+              divisi: p['divisi']);
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -187,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   type: "success");
             },
           );
-          Future.delayed(Duration(seconds: 5), () {
+          Future.delayed(Duration(seconds: 0), () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {
                 return DashboardScreen();
@@ -229,4 +245,17 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  
+
+  void checkLoginStatus() {
+  if (!globals.isLogin) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) {
+        return DashboardScreen();
+      }),
+    );
+  }
+}
+
 }

@@ -43,6 +43,7 @@ class PegawaiModel {
       'nohp_pegawai': nohpPegawai,
       'nip': nip,
       'id_divisi': idDivisi, 
+      'divisi': divisi
     };
   }
 }

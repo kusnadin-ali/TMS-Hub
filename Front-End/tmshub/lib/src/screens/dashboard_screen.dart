@@ -10,8 +10,7 @@ import 'package:tmshub/src/utils/globals.dart' as globals;
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(globals.userLogin!.toString());
-    print(globals.pegawaiLogin!.toString());
+    print("dipanggil");
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -65,7 +64,7 @@ class DashboardScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '${globals.pegawaiLogin!.divisi}',
+                              '${globals.pegawaiLogin != null? globals.pegawaiLogin!.divisi! : '-'}',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -74,7 +73,7 @@ class DashboardScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '${globals.pegawaiLogin!.nip == null ? globals.pegawaiLogin!.nip : '-'}',
+                              '${globals.pegawaiLogin != null? globals.pegawaiLogin!.nip : '-'}',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontFamily: 'Montserrat',
