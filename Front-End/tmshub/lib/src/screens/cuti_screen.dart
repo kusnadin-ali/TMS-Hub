@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tmshub/src/models/cuti_model.dart';
 import 'package:tmshub/src/screens/cuti/cuti_add_screen.dart';
+import 'package:tmshub/src/services/cuti_services.dart';
 import 'package:tmshub/src/widgets/cuti_widgets/cuti_card.dart';
-import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
+import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/widgets/utility.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class CutiScreen extends StatefulWidget {
   const CutiScreen({Key? key}) : super(key: key);
@@ -14,68 +17,87 @@ class CutiScreen extends StatefulWidget {
 }
 
 class _CutiScreenState extends State<CutiScreen> {
-  late bool error = false, notFound = false;
-  var items = List.empty();
+  late bool isExist = false;
+  List<CutiModel>? listCuti;
+  CutiSisaModel? sisaCuti;
+
+  @override
+  void initState() {
+    super.initState();
+    getCutiByUserAPI(globals.userLogin!.idUser).then((value) {
+      setState(() {
+        listCuti = value;
+        isExist = true;
+      });
+    });
+    getSisaCuti(globals.userLogin!.idUser).then((value) => {
+          setState(() {
+            sisaCuti = CutiSisaModel(
+              namaUser: value['nama_user'],
+              sisaCuti: value['sisa_cuti'],
+            );
+          })
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _getFAB(context, error, notFound),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Padding(
-            padding: EdgeInsets.only(top: 14, left: 10, right: 10),
-            child: CustomTittleBar(
-              tittle: "Pengajuan Cuti",
-              onPress: () {
-                Navigator.pop(context);
-              },
-            ),
+      floatingActionButton: _getFAB(context),
+      body: Column(
+        children: [
+          TopNavigation(title: "pengajuan cuti"),
+          SizedBox(
+            height: 10,
           ),
-
-          //ERROR
-          if (error) errorMistakes(),
-
-          //Data Tidak ditemukan
-          if (notFound) errorNotFound(),
-
-          //list cuti
-          if (!error && !notFound)
-            Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: Column(
-                  children: [
-                    // items.map((e) => e),
-                    for (var i = 0; i < 10; i++)
-                      CutiCard(
-                        tittle: "Cuti",
-                        status: "PENGAJUAN HRD",
-                        date: "27 Feb 2023",
-                      ),
-                  ],
-                )),
-        ]),
+          _cutiList()
+        ],
       ),
     );
   }
-}
 
-Widget _getFAB(context, con1, con2) {
-  if (!con1 && !con2) {
-    return FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CutiAddScreen()));
-        },
-        backgroundColor: HexColor("#537FE7"),
-        isExtended: false,
-        child: Icon(
-          Icons.add_sharp,
-          size: 50,
-        ));
-  } else {
-    return Container();
+  Widget _cutiList() {
+    if (isExist) {
+      if (listCuti!.isNotEmpty) {
+        return Expanded(child: SingleChildScrollView(child: screenExist()));
+      } else {
+        return noContent();
+      }
+    } else {
+      return problemNetwork();
+    }
+  }
+
+  Widget screenExist() {
+    return Column(
+      children: listCuti!.map((cuti) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+          child: CutiCard(
+            cuti: cuti,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _getFAB(context) {
+    if (isExist) {
+      return FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CutiAddScreen(sisaCuti: sisaCuti)));
+          },
+          backgroundColor: HexColor("#537FE7"),
+          isExtended: false,
+          child: Icon(
+            Icons.add_sharp,
+            size: 50,
+          ));
+    } else {
+      return Container();
+    }
   }
 }
-
-backToDashboard() {}

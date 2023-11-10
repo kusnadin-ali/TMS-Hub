@@ -3,42 +3,50 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-Widget errorMistakes() {
-  return Column(children: <Widget>[
-    Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: Text(
-        "Oops !",
-        style: TextStyle(
-            fontFamily: "Montserrat",
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            color: HexColor("#EA5455")),
-      ),
+Widget noContent() {
+  return Expanded(
+      child: Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/no_content.png'),
+        SizedBox(
+          height: 15,
+        ),
+        Text(
+          "Tidak ada data.",
+          style: TextStyle(
+              color: HexColor("#A09C9C"),
+              fontFamily: "Montserrat",
+              fontSize: 18,
+              fontWeight: FontWeight.w600),
+        )
+      ],
     ),
-    const Image(image: AssetImage("error.png"), height: 300),
-    Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        "Terjadi Kesalahan",
-        style: TextStyle(
-            fontFamily: "Montserrat", fontSize: 18, color: HexColor("#A09C9C")),
-      ),
-    ),
-  ]);
+  ));
 }
 
-Widget errorNotFound() {
-  return const Column(children: <Widget>[
-    Padding(
-      padding: EdgeInsets.only(top: 100),
-      child: Image(image: AssetImage("dataNotFound.png")),
+Widget problemNetwork() {
+  return Expanded(
+      child: Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/404.png'),
+        SizedBox(
+          height: 15,
+        ),
+        Text(
+          "Tidak ada data.",
+          style: TextStyle(
+              color: HexColor("#A09C9C"),
+              fontFamily: "Montserrat",
+              fontSize: 18,
+              fontWeight: FontWeight.w600),
+        )
+      ],
     ),
-    Padding(
-      padding: EdgeInsets.only(top: 14),
-      child: Text("Data Tidak Ditemukan"),
-    ),
-  ]);
+  ));
 }
 
 showSuccessDialog({required context, required onPress}) {

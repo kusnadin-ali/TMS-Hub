@@ -64,12 +64,13 @@ class ChangePicture extends StatelessWidget {
 
 Widget _changePictureItem(
     {required String tittle, required IconData icon, required onPress}) {
-  return GestureDetector(
+  return InkWell(
     onTap: onPress,
+    onDoubleTap: onPress,
     child: DottedBorder(
       borderType: BorderType.RRect,
       radius: Radius.circular(20),
-      dashPattern: [5, 5],
+      dashPattern: const [5, 5],
       color: Colors.black,
       strokeWidth: 2,
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),

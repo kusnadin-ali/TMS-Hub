@@ -10,17 +10,16 @@ class UserModel {
     required this.namaUser,
     required this.emailUser,
     required this.passwordUser,
-    required this.role
+    required this.role,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      idUser: json['id_user'],
-      namaUser: json['nama_user'],
-      emailUser: json['email_user'],
-      passwordUser: json['password_user'],
-      role: json['role']
-    );
+        idUser: json['id_user'],
+        namaUser: json['nama_user'],
+        emailUser: json['email_user'],
+        passwordUser: json['password_user'],
+        role: json['role']);
   }
 
   Map<String, dynamic> toJson() {
@@ -28,7 +27,7 @@ class UserModel {
       'id_user': idUser,
       'nama_user': namaUser,
       'email_user': emailUser,
-      'password_user':passwordUser,
+      'password_user': passwordUser,
       'role': role
     };
   }

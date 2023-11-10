@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
-import 'package:tmshub/src/widgets/utility.dart';
+import 'package:tmshub/src/services/user_services.dart';
+import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
+import 'package:tmshub/src/widgets/top_navigation.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class EditPasswordScreen extends StatefulWidget {
   @override
@@ -11,88 +13,140 @@ class EditPasswordScreen extends StatefulWidget {
 }
 
 class _EditPasswordState extends State<EditPasswordScreen> {
-  dynamic oldPassword, newPassword, newRePassword;
-  bool _oldVisibility = true, _newVisibility = false, _newReVisibility = false;
+  bool _oldVisibility = true, _newVisibility = true, _newReVisibility = true;
   final oldPasswordCont = TextEditingController();
+  final newPasswordCont = TextEditingController();
+  final newRePasswordCont = TextEditingController();
 
   @override
   void initState() {
+    oldPasswordCont.dispose();
+    newPasswordCont.dispose();
+    newRePasswordCont.dispose();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomTittleBar(
-                  tittle: "GANTI KATA SANDI",
-                  onPress: () {
-                    Navigator.pop(context);
-                  }),
-              SizedBox(height: 15),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Jangan bagikan kepada siapapun kata sandi \nyang sudah anda ubah !!!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFFA8AAAE),
-                    fontSize: 12,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    height: 0,
-                  ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TopNavigation(title: "GANTI KATA SANDI"),
+            SizedBox(height: 15),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Jangan bagikan kepada siapapun kata sandi \nyang sudah anda ubah !!!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFFA8AAAE),
+                  fontSize: 12,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  height: 0,
                 ),
               ),
-              SizedBox(height: 30),
-              _inputPassword(
-                tittle: "Kata sandi sekarang",
-                localVariable: oldPassword,
-                value: _oldVisibility,
-                context: context,
-              ),
-              _inputPassword(
-                tittle: "Kata sandi baru",
-                localVariable: newPassword,
-                value: _newVisibility,
-                context: context,
-              ),
-              _inputPassword(
-                tittle: "Ulangi kata sandi baru",
-                localVariable: newRePassword,
-                value: _newReVisibility,
-                context: context,
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 30),
+            _inputPassword(
+              tittle: "Kata sandi sekarang",
+              controller: newRePasswordCont,
+              value: _oldVisibility,
+              context: context,
+            ),
+            _inputPassword(
+              tittle: "Kata sandi baru",
+              controller: newPasswordCont,
+              value: _newVisibility,
+              context: context,
+            ),
+            _inputPassword(
+              tittle: "Ulangi kata sandi baru",
+              controller: newRePasswordCont,
+              value: _newReVisibility,
+              context: context,
+            ),
+          ],
         ),
-        bottomSheet: Container(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-          width: MediaQuery.of(context).size.width - 40,
-          height: 20,
-          child: ElevatedButton(
-            onPressed: () => storePassword(context),
-            child: Text(
-              "SIMPAN",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w600,
-              ),
+      ),
+      bottomSheet: Container(
+        margin: EdgeInsets.only(bottom: 40, left: 20, right: 20),
+        width: MediaQuery.of(context).size.width - 40,
+        child: ElevatedButton(
+          onPressed: () => storePassword(context),
+          child: Text(
+            "SIMPAN",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ));
+        ),
+      ),
+    );
+  }
+
+  _toggle(bool value) {
+    setState() {
+      value = !value;
+    }
+  }
+
+  storePassword(BuildContext context) {
+    if (newPasswordCont.text == newRePasswordCont.text) {
+      Map<String, dynamic> request = {
+        'id_user': globals.userLogin!.idUser,
+        'old_password': oldPasswordCont.text,
+        'new_password': newPasswordCont.text,
+      };
+      changePasswordAPI(request).then((response) {
+        if (response['statusCode'] == 200) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialog(
+                title: "Sukses Login",
+                message: "Berhasil menyimpan password!",
+                type: "success",
+              );
+            },
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialog(
+                title: "Gagal Menyimpan Password",
+                message: "Password tidak boleh sama dengan password sebelumnya",
+                type: "failed",
+              );
+            },
+          );
+        }
+      }).onError((error, stackTrace) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomDialog(
+              title: "Gagal Menyimpan Password",
+              message: error.toString(),
+              type: "failed",
+            );
+          },
+        );
+      });
+    }
   }
 }
 
 Widget _inputPassword(
     {required String tittle,
-    required localVariable,
+    required controller,
     required bool value,
     context}) {
   return Padding(
@@ -114,7 +168,7 @@ Widget _inputPassword(
           SizedBox(height: 12),
           TextFormField(
             keyboardType: TextInputType.text,
-            initialValue: localVariable,
+            controller: controller,
             obscureText: !value,
             style: TextStyle(
               fontFamily: "Montserrat",
@@ -141,20 +195,4 @@ Widget _inputPassword(
           ),
         ],
       ));
-}
-
-_toggle(bool value) {
-  setState() {
-    value = !value;
-  }
-}
-
-storePassword(BuildContext context) {
-  //TODO: add some logic to store password via API
-
-  return showSuccessDialog(
-      context: context,
-      onPress: () {
-        Navigator.of(context, rootNavigator: true).pop();
-      });
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/profile/edit_password_screen.dart';
 import 'package:tmshub/src/screens/profile/edit_profil_screen.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class ProfilCard extends StatefulWidget {
   const ProfilCard({Key? key}) : super(key: key);
@@ -20,12 +21,30 @@ class _ProfilCardState extends State<ProfilCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _itemDetail(tittle: "Nama Lengkap", value: "Dimas Tri Satria"),
-            _itemDetail(tittle: "Alamat", value: "Jalan Pamulang Raya"),
-            _itemDetail(tittle: "Email", value: "Dimas@gmail.com"),
-            _itemDetail(tittle: "No. Telepon", value: "08823728231"),
-            _itemDetail(tittle: "Divisi", value: "Tracer"),
-            _itemDetail(tittle: "Nomor Kepegawaian", value: "8976720"),
+            _itemDetail(
+              tittle: "Nama Lengkap",
+              value: globals.userLogin!.namaUser,
+            ),
+            _itemDetail(
+              tittle: "Alamat",
+              value: globals.pegawaiLogin!.alamatPegawai!,
+            ),
+            _itemDetail(
+              tittle: "Email",
+              value: globals.userLogin!.emailUser,
+            ),
+            _itemDetail(
+              tittle: "No. Telepon",
+              value: globals.pegawaiLogin!.nohpPegawai!,
+            ),
+            _itemDetail(
+              tittle: "Divisi",
+              value: globals.pegawaiLogin!.divisi!,
+            ),
+            _itemDetail(
+              tittle: "Nomor Kepegawaian",
+              value: globals.pegawaiLogin!.nip!,
+            ),
             SizedBox(height: 12),
             SizedBox(
               width: double.maxFinite,
@@ -62,7 +81,7 @@ class _ProfilCardState extends State<ProfilCard> {
                   },
                   child: Image(
                     height: 40,
-                    image: AssetImage("edit-100.png"),
+                    image: AssetImage("assets/edit-100.png"),
                     filterQuality: FilterQuality.high,
                   ),
                 )),
@@ -107,3 +126,5 @@ Widget _itemDetail({required String tittle, required String value}) {
     ],
   );
 }
+
+fetchData() {}

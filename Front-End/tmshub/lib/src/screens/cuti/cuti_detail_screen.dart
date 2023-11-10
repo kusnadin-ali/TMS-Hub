@@ -2,10 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
+import 'package:tmshub/src/models/cuti_model.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'package:tmshub/src/widgets/top_navigation.dart';
 
 class CutiDetailScreen extends StatelessWidget {
-  const CutiDetailScreen({Key? key}) : super(key: key);
+  final CutiModel cuti;
+
+  const CutiDetailScreen({Key? key, required this.cuti}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +20,7 @@ class CutiDetailScreen extends StatelessWidget {
             Padding(
               padding:
                   EdgeInsets.only(top: 14, left: 10, right: 10, bottom: 20),
-              child: CustomTittleBar(
-                tittle: "Detail Pengajuan Cuti",
-                onPress: () {},
-              ),
-            ),
-            SizedBox(
-              height: 30,
+              child: TopNavigation(title: "Detail Pengajuan Cuti"),
             ),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12),
@@ -45,7 +43,7 @@ class CutiDetailScreen extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(12)),
                             ),
                             child: Image(
-                              image: AssetImage("edit-100.png"),
+                              image: AssetImage("assets/edit-100.png"),
                               filterQuality: FilterQuality.high,
                             ),
                           ),
@@ -69,37 +67,42 @@ class CutiDetailScreen extends StatelessWidget {
                       SizedBox(height: 12),
                       cutiDetailCard(
                           tittle: "Nama",
-                          content: "Dimas Tri Aditya",
+                          content: globals.userLogin!.namaUser,
                           icon: Icons.person),
                       SizedBox(height: 18),
                       cutiDetailCard(
                           tittle: "Mulai Cuti",
-                          content: "27 Feb 2023",
+                          content: cuti.tglMulai,
                           icon: Icons.calendar_month),
                       SizedBox(height: 18),
                       cutiDetailCard(
                           tittle: "Selesai Cuti",
-                          content: "30 Feb 2023",
+                          content: cuti.tglSelesai,
                           icon: Icons.event_available),
                       SizedBox(height: 18),
                       cutiDetailCard(
+                          tittle: "Status Cuti",
+                          content: cuti.statusCuti,
+                          icon: Icons.person),
+                      SizedBox(height: 18),
+                      cutiDetailCard(
                           tittle: "Disetujui Oleh",
-                          content: "Grandi Ekabuana",
+                          content: cuti.admin,
                           icon: Icons.person),
                       SizedBox(height: 18),
                       cutiDetailCard(
                           tittle: "Jenis Cuti",
-                          content: "Acara Keluarga",
+                          content: cuti.jenisCuti,
                           icon: Icons.beach_access),
                       SizedBox(height: 18),
                       cutiDetailCard(
                           tittle: "Keterangan",
-                          content: "Acara Keluarga",
+                          content: cuti.keterangan,
                           icon: Icons.menu),
                       SizedBox(height: 18),
                       cutiDetailCard(
                           tittle: "Sisa Cuti",
-                          content: "10 Hari",
+                          content: cuti.sisaCuti,
                           icon: Icons.calendar_today),
                     ],
                   ),

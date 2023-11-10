@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
 import 'package:tmshub/src/widgets/profile_widgets/change_picture.dart';
 import 'package:tmshub/src/widgets/profile_widgets/profile_main.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -38,9 +38,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10, top: 10),
-                child: CustomTittleBar(
-                  tittle: "PROFIL",
-                  onPress: () {},
+                child: TopNavigation(
+                  title: "PROFIL",
                 ),
               ),
               Container(
@@ -63,7 +62,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     backgroundColor: HexColor("#E5F1F8"),
                     child: CircleAvatar(
                       radius: 65,
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(
+                          globals.urlAPI + globals.pegawaiLogin!.fotoProfil!),
                     ),
                   ),
                 ),

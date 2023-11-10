@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, avoid_print, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:tmshub/src/screens/profile_screen.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/dasboard_navigation.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/visi_misi_card.dart';
@@ -17,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 200,
+              height: 210,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 75, 194, 255),
@@ -83,16 +84,36 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: ClipOval(
-                          child: Image.network(
-                            globals.urlAPI + globals.pegawaiLogin!.fotoProfil!,
-                            width: 90,
-                            height: 90,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      )
+                          padding: EdgeInsets.only(right: 20),
+                          child: Stack(
+                            children: [
+                              ClipOval(
+                                child: Image.network(
+                                  globals.urlAPI +
+                                      globals.pegawaiLogin!.fotoProfil!,
+                                  width: 90,
+                                  height: 90,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 50, left: 50),
+                                child: FloatingActionButton.small(
+                                  heroTag: "fab_profile",
+                                  backgroundColor: HexColor("#E5F1F8"),
+                                  child: Icon(Icons.edit_square,
+                                      color: Colors.black),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileScreen()));
+                                  },
+                                ),
+                              ),
+                            ],
+                          ))
                     ],
                   )
                 ],

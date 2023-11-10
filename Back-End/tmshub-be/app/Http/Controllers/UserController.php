@@ -75,4 +75,28 @@ class UserController extends Controller
         }
     }
 
+    public function changePassword(Request $request){
+        try {
+            $data = $request->validate([
+                'id_user' => 'required|integer',
+                'old_password' => 'required|max:10',
+                'new_password' => 'required|max:10'
+            ]);
+
+            $userCur = User::where('id_user', $data['id_user'])->first();
+            if(!($userCur == null)){
+                if(md5($data['old_password']) != $userCur['password_user'] && $data['old_password'] != $data['new_password']){
+                    $user = User::where('id_user', $data['id_user'])->update(['password_user' => md5($data['password_user'])]);
+                    return response()->json(['message' => 'Berhasil Mengubah Password'], 200);
+                }
+                return response()->json(['message' => 'password tidak boleh sama dengan sebelumnya'], 401);
+            }
+            return response()->json(['message' => 'email tidak terdaftar'], 401);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errors = $e->validator->getMessageBag();
+            return response()->json(['message' => 'Validasi gagal', 'errors' => $errors], 422); // 422 Unprocessable Entity
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Terjadi kesalahan', 'error' => $e->getMessage()], 500); // 500 Internal Server Error
+        }
+    }
 }

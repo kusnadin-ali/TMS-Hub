@@ -3,22 +3,23 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
-import 'package:tmshub/src/widgets/cuti_widgets/custom_tittle_bar.dart';
+import 'package:tmshub/src/models/cuti_model.dart';
+import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/widgets/utility.dart';
 
 class CutiAddScreen extends StatefulWidget {
+  final CutiSisaModel? sisaCuti;
+
+  const CutiAddScreen({super.key, required this.sisaCuti});
   @override
   _CutiAddState createState() => _CutiAddState();
 }
 
 class _CutiAddState extends State<CutiAddScreen> {
-  final String name = "Dimas Tri Aditya";
-  final String sisaCuti = "12";
   String _jenisCuti = "Acara Keluarga";
   TextEditingController startDateCont = TextEditingController();
   TextEditingController endDateCont = TextEditingController();
 
-  // _CutiAddState({required this.name});
   @override
   void initState() {
     startDateCont.text = '';
@@ -50,13 +51,8 @@ class _CutiAddState extends State<CutiAddScreen> {
         child: Column(
           children: [
             Padding(
-              padding:
-                  EdgeInsets.only(top: 14, left: 10, right: 10, bottom: 20),
-              child: CustomTittleBar(
-                  tittle: "Permintaan Pengajuan Cuti",
-                  onPress: () {
-                    Navigator.pop(context);
-                  }),
+              padding: EdgeInsets.only(top: 14, left: 10, right: 10),
+              child: TopNavigation(title: "Permintaan Pengajuan Cuti"),
             ),
             Form(
               child: Padding(
@@ -64,7 +60,6 @@ class _CutiAddState extends State<CutiAddScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 16),
                     Text(
                       "Nama Pegawai",
                       style: TextStyle(
@@ -76,7 +71,7 @@ class _CutiAddState extends State<CutiAddScreen> {
                     ),
                     SizedBox(height: 12),
                     TextFormField(
-                      initialValue: name,
+                      initialValue: widget.sisaCuti!.namaUser,
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontSize: 12,
@@ -234,7 +229,7 @@ class _CutiAddState extends State<CutiAddScreen> {
                     ),
                     SizedBox(height: 12),
                     TextFormField(
-                      initialValue: '$sisaCuti Hari',
+                      initialValue: '${widget.sisaCuti!.sisaCuti} Hari',
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontSize: 12,
@@ -310,8 +305,6 @@ class _CutiAddState extends State<CutiAddScreen> {
       ),
     );
   }
-
-  backToAnnualLeave() {}
 
   _pickDate(BuildContext context) {
     var now = DateTime.now();

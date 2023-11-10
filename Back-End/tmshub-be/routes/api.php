@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/change-password', [UserController::class, 'changePassword']);
 
 // Presensi
 Route::get('/presensi', [PresensiController::class, 'index']);
@@ -55,8 +56,8 @@ Route::post('/reimburse/create', [ReimburseController::class, 'storeReimburseByU
 
 //Cuti
 Route::controller(CutiController::class)->group(function(){
-    Route::get('/cuti/user/{userId}', 'findByUser');
+    Route::get('/cutis/{userId}', 'findByUser');
     Route::get('/cuti/{cutiId}', 'getDetailCuti');
     Route::post('/cuti/add', 'addCuti');
-    Route::get('/cutis/{userId}', 'getAddData');
+    Route::get('/cuti-sisa/{userId}', 'getAddData');
 });

@@ -6,8 +6,8 @@ import 'package:tmshub/src/models/penggajian_model.dart';
 import 'package:tmshub/src/screens/payroll/detail_penggajian_screen.dart';
 import 'package:tmshub/src/services/penggajian_services.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
-
 import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'package:tmshub/src/widgets/utility.dart';
 
 class PenggajianScreen extends StatefulWidget {
   const PenggajianScreen({Key? key}) : super(key: key);
@@ -63,127 +63,76 @@ class _PenggajianScreenState extends State<PenggajianScreen> {
       children: listPenggajian!.map((penggajian) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-          child: cardPayroll(
-            pData: penggajian
-          ),
+          child: cardPayroll(pData: penggajian),
         );
       }).toList(),
     );
   }
 
-  Widget cardPayroll({
-    required PenggajianModel pData
-  }) {
+  Widget cardPayroll({required PenggajianModel pData}) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-              onTap: () {
-                // print("click");
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context){
-                    return DetailPenggajianScreen(penggajianModel: pData);
-                  })
-                );
-              },
-              child: Ink(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(11),
-                    topRight: Radius.circular(11),
-                    bottomLeft: Radius.circular(11),
-                    bottomRight: Radius.circular(11),
-                  ),
+        color: Colors.transparent,
+        child: InkWell(
+            onTap: () {
+              // print("click");
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return DetailPenggajianScreen(penggajianModel: pData);
+              }));
+            },
+            child: Ink(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(11),
+                  topRight: Radius.circular(11),
+                  bottomLeft: Radius.circular(11),
+                  bottomRight: Radius.circular(11),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 21),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        pData.keterangan,
-                        style: TextStyle(
-                            color: HexColor("#3D3D3D"),
-                            fontFamily: "Montserrat",
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Rp. ${pData.gajiPokok}",
-                        style: TextStyle(
-                            color: HexColor("#A8AAAE"),
-                            fontFamily: "Montserrat",
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        pData.statusGaji,
-                        style: TextStyle(
-                            color: HexColor("#38D32A"),
-                            fontFamily: "Montserrat",
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600),
-                      )
-                    ],
-                  ),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 21),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      pData.keterangan,
+                      style: TextStyle(
+                          color: HexColor("#3D3D3D"),
+                          fontFamily: "Montserrat",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Rp. ${pData.gajiPokok}",
+                      style: TextStyle(
+                          color: HexColor("#A8AAAE"),
+                          fontFamily: "Montserrat",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      pData.statusGaji,
+                      style: TextStyle(
+                          color: HexColor("#38D32A"),
+                          fontFamily: "Montserrat",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600),
+                    )
+                  ],
                 ),
-              )),
-        ),
+              ),
+            )),
+      ),
       decoration: BoxDecoration(
           color: HexColor("#f1f7fb"), borderRadius: BorderRadius.circular(15)),
     );
-  }
-
-  Widget noContent() {
-    return Expanded(
-        child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('assets/no_content.png'),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Tidak ada data.",
-            style: TextStyle(
-                color: HexColor("#A09C9C"),
-                fontFamily: "Montserrat",
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
-          )
-        ],
-      ),
-    ));
-  }
-
-  Widget problemNetwork() {
-    return Expanded(
-        child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('assets/404.png'),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Tidak ada data.",
-            style: TextStyle(
-                color: HexColor("#A09C9C"),
-                fontFamily: "Montserrat",
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
-          )
-        ],
-      ),
-    ));
   }
 }

@@ -5,8 +5,7 @@ import 'package:tmshub/src/utils/globals.dart' as globals;
 
 import 'package:http/http.dart' as http;
 
-
-Future<Map<String, dynamic>> loginAPI(Map<String, dynamic> request)async{
+Future<Map<String, dynamic>> loginAPI(Map<String, dynamic> request) async {
   final response = await http.post(
     Uri.parse(globals.urlAPI + '/login'),
     headers: {
@@ -23,7 +22,7 @@ Future<Map<String, dynamic>> loginAPI(Map<String, dynamic> request)async{
   }
 }
 
-Future<Map<String, dynamic>> registerAPI(Map<String, dynamic> request)async{
+Future<Map<String, dynamic>> registerAPI(Map<String, dynamic> request) async {
   final response = await http.post(
     Uri.parse(globals.urlAPI + '/register'),
     headers: {
@@ -38,5 +37,23 @@ Future<Map<String, dynamic>> registerAPI(Map<String, dynamic> request)async{
     return jsonResponse;
   } else {
     throw Exception('Gagal register');
+  }
+}
+
+Future<Map<String, dynamic>> changePasswordAPI(
+    Map<String, dynamic> request) async {
+  final response = await http.post(
+    Uri.parse(globals.urlAPI + '/change-password'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(request),
+  );
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    return jsonResponse;
+  } else {
+    throw Exception('Gagal mengubah password');
   }
 }

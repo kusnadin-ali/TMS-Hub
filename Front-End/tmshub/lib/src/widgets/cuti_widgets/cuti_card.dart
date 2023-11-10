@@ -2,16 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tmshub/src/models/cuti_model.dart';
+import 'package:tmshub/src/screens/cuti/cuti_detail_screen.dart';
 
 class CutiCard extends StatelessWidget {
-  final String tittle, status, date;
+  final CutiModel cuti;
 
-  const CutiCard(
-      {Key? key,
-      required this.tittle,
-      required this.status,
-      required this.date})
-      : super(key: key);
+  const CutiCard({Key? key, required this.cuti}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +25,19 @@ class CutiCard extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: Image(
-                image: AssetImage("edit-100.png"),
+                image: AssetImage("assets/edit-100.png"),
                 filterQuality: FilterQuality.high,
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width - 130,
+              width: MediaQuery.of(context).size.width - 150,
               padding: EdgeInsets.only(left: 20),
               height: 60,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    tittle,
-                    // textAlign: TextAlign.start,
+                    "Cuti",
                     style: TextStyle(
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w600,
@@ -51,7 +47,7 @@ class CutiCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    status,
+                    cuti.statusCuti,
                     style: TextStyle(
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w500,
@@ -61,7 +57,7 @@ class CutiCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    date,
+                    cuti.tglMulai.toString(),
                     style: TextStyle(
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w500,
@@ -77,7 +73,14 @@ class CutiCard extends StatelessWidget {
               alignment: Alignment.center,
               splashRadius: 30,
               iconSize: 20,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CutiDetailScreen(
+                              cuti: cuti,
+                            )));
+              },
             )
           ],
         ));
