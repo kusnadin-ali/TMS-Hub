@@ -44,7 +44,7 @@ Future<Map<String, dynamic>> getSisaCuti(int userId) async {
   }
 }
 
-Future<Map<String, dynamic>> storeCutiAPI(Map<String, dynamic> request) async {
+Future<Map<String, dynamic>> saveCutiAPI(Map<String, dynamic> request) async {
   final response = await http.post(
     Uri.parse('${globals.urlAPI}/cuti/add'),
     headers: {

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/screens/profile_screen.dart';
+import 'package:tmshub/src/screens/profile/profile_screen.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/dasboard_navigation.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/visi_misi_card.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
@@ -64,7 +64,7 @@ class DashboardScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '${globals.pegawaiLogin != null? globals.pegawaiLogin!.divisi! : '-'}',
+                              '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.divisi! : '-'}',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -73,7 +73,7 @@ class DashboardScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '${globals.pegawaiLogin != null? globals.pegawaiLogin!.nip : '-'}',
+                              '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.nip : '-'}',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontFamily: 'Montserrat',

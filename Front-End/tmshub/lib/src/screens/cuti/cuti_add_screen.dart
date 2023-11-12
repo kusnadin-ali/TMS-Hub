@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:tmshub/src/models/cuti_model.dart';
+import 'package:tmshub/src/services/cuti_services.dart';
+import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
-import 'package:tmshub/src/widgets/utility.dart';
+import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class CutiAddScreen extends StatefulWidget {
   final CutiSisaModel? sisaCuti;
@@ -16,14 +18,16 @@ class CutiAddScreen extends StatefulWidget {
 }
 
 class _CutiAddState extends State<CutiAddScreen> {
-  String _jenisCuti = "Acara Keluarga";
+  String _jenisCuti = "Casual Leave".toUpperCase();
   TextEditingController startDateCont = TextEditingController();
   TextEditingController endDateCont = TextEditingController();
+  TextEditingController keteranganCont = TextEditingController();
 
   @override
   void initState() {
     startDateCont.text = '';
     endDateCont.text = '';
+    keteranganCont.text = '';
     super.initState();
   }
 
@@ -38,11 +42,7 @@ class _CutiAddState extends State<CutiAddScreen> {
               backgroundColor: HexColor("#537FE7"),
               foregroundColor: Colors.white),
           onPressed: () {
-            showSuccessDialog(
-                context: context,
-                onPress: () {
-                  Navigator.pop(context);
-                });
+            saveCuti();
           },
           child: Text("Kirim"),
         ),
@@ -206,12 +206,12 @@ class _CutiAddState extends State<CutiAddScreen> {
                         ),
                         items: [
                           DropdownMenuItem(
-                            value: "Acara Keluarga",
-                            child: Text("Acara Keluarga"),
+                            value: "Casual Leave".toUpperCase(),
+                            child: Text("Casual Leave"),
                           ),
                           DropdownMenuItem(
-                            value: "Cuti Hamil",
-                            child: Text("Cuti Hamil"),
+                            value: "Emergency Leave".toUpperCase(),
+                            child: Text("Emergency Leave"),
                           ),
                         ],
                       ),
@@ -261,6 +261,7 @@ class _CutiAddState extends State<CutiAddScreen> {
                     ),
                     SizedBox(height: 12),
                     TextFormField(
+                      controller: keteranganCont,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -323,5 +324,42 @@ class _CutiAddState extends State<CutiAddScreen> {
         _jenisCuti = selectedValue;
       });
     }
+  }
+
+  String parseDateInput(String input) {
+    return DateFormat('yyyy-MM-dd').format(DateFormat('d MMMM y').parse(input));
+  }
+
+  saveCuti() {
+    Map<String, String> request = {
+      "id_user": globals.userLogin!.idUser.toString(),
+      "tgl_mulai": parseDateInput(startDateCont.text),
+      "tgl_akhir": parseDateInput(endDateCont.text),
+      "jenis_cuti": _jenisCuti,
+      "keterangan": keteranganCont.text
+    };
+    saveCutiAPI(request).then((response) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+            title: "Sukses Menyimpan Cuti",
+            message: "Berhasil menyimpan cuti!",
+            type: "success",
+          );
+        },
+      );
+    }).onError((error, stackTrace) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+            title: "Gagal Menyimpan Cuti",
+            message: error.toString(),
+            type: "failed",
+          );
+        },
+      );
+    });
   }
 }

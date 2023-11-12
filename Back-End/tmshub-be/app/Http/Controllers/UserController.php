@@ -83,10 +83,10 @@ class UserController extends Controller
                 'new_password' => 'required|max:10'
             ]);
 
-            $userCur = User::where('id_user', $data['id_user'])->first();
-            if(!($userCur == null)){
-                if(md5($data['old_password']) != $userCur['password_user'] && $data['old_password'] != $data['new_password']){
-                    $user = User::where('id_user', $data['id_user'])->update(['password_user' => md5($data['password_user'])]);
+            $userCur = User::find($data['id_user']);
+            if($userCur != null){
+                if(md5($data['old_password']) == $userCur['password_user'] && $data['old_password'] != $data['new_password']){
+                    $user = User::find($data['id_user'])->update(['password_user' => md5($data['new_password'])]);
                     return response()->json(['message' => 'Berhasil Mengubah Password'], 200);
                 }
                 return response()->json(['message' => 'password tidak boleh sama dengan sebelumnya'], 401);

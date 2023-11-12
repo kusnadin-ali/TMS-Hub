@@ -44,6 +44,7 @@ Route::get('/perusahaan', [PerusahaanController::class, 'index']);
 Route::get('/pegawai/{userId}', [PegawaiController::class, 'getPegawai']);
 Route::get('/pegawai/image/{pegawaiId}', [PegawaiController::class, 'getPhotoByPegawaiId']);
 Route::post('/pegawai/update-profile-picture', [PegawaiController::class, 'imageStore']);
+Route::post('/pegawai/update-profile', [PegawaiController::class, 'updateProfile']);
 
 //penggajian
 Route::get('/penggajian/{userId}', [PenggajianController::class, 'getAllPayRollByUser']);

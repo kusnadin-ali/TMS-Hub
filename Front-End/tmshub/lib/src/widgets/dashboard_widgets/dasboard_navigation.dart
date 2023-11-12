@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:tmshub/src/screens/cuti_screen.dart';
+import 'package:tmshub/src/screens/cuti/cuti_screen.dart';
 import 'package:tmshub/src/screens/payroll/penggajian_screen.dart';
 import 'package:tmshub/src/screens/presensi/presensi_screen.dart';
 import 'package:tmshub/src/screens/reimburse/pengembaliandana_screen.dart';
@@ -77,7 +77,6 @@ class DasboardNavigationWidget extends StatelessWidget {
       IconData icon = Icons.abc,
       required BuildContext context,
       required Widget destination}) {
-
     double fontSize = 13;
     double iconSize = 50;
     if (title.length > 9) {
@@ -93,11 +92,9 @@ class DasboardNavigationWidget extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context){
-                  return destination;
-                })
-              );
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return destination;
+              }));
             },
             child: Ink(
               decoration: BoxDecoration(

@@ -52,6 +52,7 @@ Future<Map<String, dynamic>> changePasswordAPI(
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    jsonResponse['statusCode'] = response.statusCode;
     return jsonResponse;
   } else {
     throw Exception('Gagal mengubah password');

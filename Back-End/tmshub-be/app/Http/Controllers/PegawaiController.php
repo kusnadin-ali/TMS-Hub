@@ -119,7 +119,7 @@ class PegawaiController extends Controller
     public function updateProfile(Request $request){
         $data = $request->validate([
             'id_user' => 'required|integer',
-            'alamat_pegawai' => 'required',
+            'alamat_pegawai' => 'required',     
             'email_user'=> 'required|email',
             'nohp_pegawai' => 'required',
         ]);

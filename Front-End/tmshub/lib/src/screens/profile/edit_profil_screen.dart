@@ -2,7 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tmshub/src/models/pegawai_model.dart';
+import 'package:tmshub/src/models/user_model.dart';
+import 'package:tmshub/src/services/pegawai_services.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
+import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 
 class EditProfilScreen extends StatefulWidget {
@@ -14,13 +18,21 @@ class EditProfilScreen extends StatefulWidget {
 
 class _EditProfilScreenState extends State<EditProfilScreen> {
   // dynamic temp;
-  var alamatCont = TextEditingController();
-  var emailCont = TextEditingController();
-  var nohpCont = TextEditingController();
+  var alamatCont =
+      TextEditingController(text: globals.pegawaiLogin!.alamatPegawai!);
+  var emailCont = TextEditingController(text: globals.userLogin!.emailUser);
+  var nohpCont =
+      TextEditingController(text: globals.pegawaiLogin!.nohpPegawai!);
 
   @override
   void initState() {
     super.initState();
+    // namaCont.text = globals.userLogin!.namaUser;
+    // alamatCont.text = globals.pegawaiLogin!.alamatPegawai!;
+    // emailCont.text = globals.userLogin!.emailUser;
+    // nohpCont.text = globals.pegawaiLogin!.nohpPegawai!;
+    // divisiCont.text = globals.pegawaiLogin!.divisi!;
+    // nipCont.text = globals.pegawaiLogin!.nip!;
   }
 
   @override
@@ -75,35 +87,32 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
           children: [
             _inputText(
               tittle: "Nama Lengkap",
-              localVariable: globals.userLogin!.namaUser,
+              initialValue: globals.userLogin!.namaUser,
               enabled: false,
             ),
-            _inputText(
+            _inputTextCont(
               tittle: "Alamat",
-              localVariable: globals.pegawaiLogin!.alamatPegawai!,
               controller: alamatCont,
               enabled: true,
             ),
-            _inputText(
+            _inputTextCont(
               tittle: "Email",
-              localVariable: globals.userLogin!.emailUser,
               controller: emailCont,
               enabled: true,
             ),
-            _inputText(
+            _inputTextCont(
               tittle: "No. Telepon",
-              localVariable: globals.pegawaiLogin!.nohpPegawai!,
               controller: nohpCont,
               enabled: true,
             ),
             _inputText(
               tittle: "Divisi",
-              localVariable: globals.pegawaiLogin!.divisi!,
+              initialValue: globals.pegawaiLogin!.divisi!,
               enabled: false,
             ),
             _inputText(
               tittle: "Nomor Kepegawaian",
-              localVariable: globals.pegawaiLogin!.nip!,
+              initialValue: globals.pegawaiLogin!.nip!,
               enabled: false,
             ),
           ],
@@ -112,13 +121,60 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
     );
   }
 
-  saveProfile() {}
+  saveProfile() {
+    Map<String, String> request = {
+      'id_user': globals.pegawaiLogin!.idPegawai.toString(),
+      'alamat_pegawai': alamatCont.text,
+      'email_user': emailCont.text,
+      'nohp_pegawai': nohpCont.text,
+    };
+    updateProfilAPI(request).then((value) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+              title: "Berhasil",
+              message: "Berhasil menyimpan perubahan!",
+              type: "success");
+        },
+      );
+      updateGlobalsVariable(alamatCont.text, emailCont.text, nohpCont.text);
+    }).onError((error, stackTrace) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+              title: "Gagal Menyimpan",
+              message: error.toString(),
+              type: "failed");
+        },
+      );
+    });
+  }
+
+  updateGlobalsVariable(String alamat, String email, String nohp) {
+    globals.userLogin = UserModel(
+        idUser: globals.userLogin!.idUser,
+        namaUser: globals.userLogin!.namaUser,
+        emailUser: email,
+        passwordUser: "*******",
+        role: 1);
+
+    globals.pegawaiLogin = PegawaiModel(
+        idPegawai: globals.pegawaiLogin!.idPegawai,
+        idUser: globals.pegawaiLogin!.idUser,
+        fotoProfil: globals.pegawaiLogin!.fotoProfil,
+        alamatPegawai: alamat,
+        nohpPegawai: nohp,
+        nip: globals.pegawaiLogin!.nip,
+        idDivisi: globals.pegawaiLogin!.idDivisi,
+        divisi: globals.pegawaiLogin!.divisi);
+  }
 
   _inputText(
       {required String tittle,
-      required var localVariable,
       required bool enabled,
-      var controller}) {
+      required String initialValue}) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +191,46 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
           ),
           SizedBox(height: 10),
           TextFormField(
-            initialValue: localVariable,
+            initialValue: initialValue,
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: HexColor("#565656"),
+            ),
+            decoration: InputDecoration(
+              enabled: enabled,
+              filled: true,
+              fillColor:
+                  !enabled ? HexColor("#80A8AAAE") : HexColor("#80FFFFFF"),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8), gapPadding: 8),
+              contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+            ),
+          )
+        ]);
+  }
+
+  _inputTextCont(
+      {required String tittle,
+      required bool enabled,
+      required TextEditingController controller}) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 8),
+          Text(
+            tittle,
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: HexColor("#565656"),
+            ),
+          ),
+          SizedBox(height: 10),
+          TextFormField(
             controller: controller,
             style: TextStyle(
               fontFamily: "Montserrat",
