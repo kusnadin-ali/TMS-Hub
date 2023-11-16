@@ -17,6 +17,7 @@ class _SplashScreen extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    globals.initializeGlobalsFromSharedPreferences();
     print("berhasil");
     Timer(
         const Duration(seconds: 2),

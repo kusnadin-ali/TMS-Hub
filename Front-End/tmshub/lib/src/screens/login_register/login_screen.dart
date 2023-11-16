@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, avoid_print, unnecessary_new
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:tmshub/src/screens/dashboard_screen.dart';
@@ -194,6 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
               nip: p['nip'],
               idDivisi: p['id_divisi'],
               divisi: p['divisi']);
+          updateSharredPreferencesLogin();
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -258,4 +262,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+  void updateSharredPreferencesLogin() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(json.encode(globals.userLogin!.toJson()));
+    prefs.setString("userLogin", json.encode(globals.userLogin!.toJson()));
+    prefs.setString("pegawaiLogin", json.encode(globals.pegawaiLogin!.toJson()));
+    prefs.setBool("isLogin", true);
+  }
 }
