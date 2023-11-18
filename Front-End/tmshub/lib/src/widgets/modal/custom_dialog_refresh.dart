@@ -1,5 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_constructors_in_immutables, unnecessary_brace_in_string_interps, must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -23,17 +21,17 @@ class CustomDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset('assets/${type}.png', width: 80),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Text(
               message,
               style: TextStyle(
@@ -41,16 +39,15 @@ class CustomDialog extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: HexColor("#8f8c99")),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ElevatedButton(
               style: ButtonStyle(
                   minimumSize: MaterialStateProperty.all(
                       Size(MediaQuery.of(context).size.width, 40))),
               onPressed: () {
-                // Navigator.of(context).pop();
                 Navigator.pop(context, true);
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),

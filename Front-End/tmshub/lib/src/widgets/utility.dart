@@ -115,3 +115,26 @@ showSuccessDialog({required context, required onPress}) {
         );
       });
 }
+
+Widget loadingWidget(BuildContext context) {
+  return Expanded(
+      child: Dialog(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: EdgeInsets.all(16),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(width: 16),
+          Text("Loading..."),
+        ],
+      ),
+    ),
+  ));
+}

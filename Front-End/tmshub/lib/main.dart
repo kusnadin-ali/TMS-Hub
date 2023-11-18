@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/screens/splash_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -15,9 +15,10 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GlobalLoaderOverlay(
+        child: MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
-    );
+    ));
   }
 }

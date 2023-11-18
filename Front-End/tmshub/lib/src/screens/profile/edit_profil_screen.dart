@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:tmshub/src/services/pegawai_services.dart';
@@ -27,12 +31,6 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
   @override
   void initState() {
     super.initState();
-    // namaCont.text = globals.userLogin!.namaUser;
-    // alamatCont.text = globals.pegawaiLogin!.alamatPegawai!;
-    // emailCont.text = globals.userLogin!.emailUser;
-    // nohpCont.text = globals.pegawaiLogin!.nohpPegawai!;
-    // divisiCont.text = globals.pegawaiLogin!.divisi!;
-    // nipCont.text = globals.pegawaiLogin!.nip!;
   }
 
   @override
@@ -122,6 +120,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
   }
 
   saveProfile() {
+    context.loaderOverlay.show();
     Map<String, String> request = {
       'id_user': globals.pegawaiLogin!.idPegawai.toString(),
       'alamat_pegawai': alamatCont.text,
@@ -129,6 +128,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
       'nohp_pegawai': nohpCont.text,
     };
     updateProfilAPI(request).then((value) {
+      _updateGlobalsVariable(alamatCont.text, emailCont.text, nohpCont.text);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -138,8 +138,9 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
               type: "success");
         },
       );
-      updateGlobalsVariable(alamatCont.text, emailCont.text, nohpCont.text);
+      context.loaderOverlay.hide();
     }).onError((error, stackTrace) {
+      context.loaderOverlay.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -152,15 +153,15 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
     });
   }
 
-  updateGlobalsVariable(String alamat, String email, String nohp) {
-    globals.userLogin = UserModel(
+  _updateGlobalsVariable(String alamat, String email, String nohp) async {
+    UserModel user = UserModel(
         idUser: globals.userLogin!.idUser,
         namaUser: globals.userLogin!.namaUser,
         emailUser: email,
         passwordUser: "*******",
         role: 1);
 
-    globals.pegawaiLogin = PegawaiModel(
+    PegawaiModel pegawai = PegawaiModel(
         idPegawai: globals.pegawaiLogin!.idPegawai,
         idUser: globals.pegawaiLogin!.idUser,
         fotoProfil: globals.pegawaiLogin!.fotoProfil,
@@ -169,6 +170,14 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
         nip: globals.pegawaiLogin!.nip,
         idDivisi: globals.pegawaiLogin!.idDivisi,
         divisi: globals.pegawaiLogin!.divisi);
+
+    globals.userLogin = user;
+    globals.pegawaiLogin = pegawai;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("userLogin", json.encode(user));
+    prefs.setString("pegawaiLogin", json.encode(pegawai));
+    prefs.setBool("isLogin", true);
   }
 
   _inputText(

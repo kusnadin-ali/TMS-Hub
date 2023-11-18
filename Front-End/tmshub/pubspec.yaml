@@ -27,6 +27,7 @@ dependencies:
   intl: ^0.18.1
   image_picker: 
   shared_preferences: ^2.2.2
+  loader_overlay: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/models/cuti_model.dart';
 import 'package:tmshub/src/screens/cuti/cuti_add_screen.dart';
 import 'package:tmshub/src/services/cuti_services.dart';
@@ -18,19 +19,29 @@ class CutiScreen extends StatefulWidget {
 
 class _CutiScreenState extends State<CutiScreen> {
   late bool isExist = false;
+  var _isLoaderVisible = true;
   List<CutiModel>? listCuti;
   CutiSisaModel? sisaCuti;
 
   @override
   void initState() {
     super.initState();
-    getCutiByUserAPI(globals.userLogin!.idUser).then((value) {
+    context.loaderOverlay.show();
+    _getCuti();
+  }
+
+  void _getCuti() async {
+    context.loaderOverlay.show();
+    setState(() {
+      _isLoaderVisible = context.loaderOverlay.visible;
+    });
+    await getCutiByUserAPI(globals.userLogin!.idUser).then((value) {
       setState(() {
         listCuti = value;
         isExist = true;
       });
     });
-    getSisaCuti(globals.userLogin!.idUser).then((value) => {
+    await getSisaCuti(globals.userLogin!.idUser).then((value) => {
           setState(() {
             sisaCuti = CutiSisaModel(
               namaUser: value['nama_user'],
@@ -38,11 +49,15 @@ class _CutiScreenState extends State<CutiScreen> {
             );
           })
         });
+    context.loaderOverlay.hide();
+    setState(() {
+      _isLoaderVisible = context.loaderOverlay.visible;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return (Scaffold(
       floatingActionButton: _getFAB(context),
       body: Column(
         children: [
@@ -53,7 +68,7 @@ class _CutiScreenState extends State<CutiScreen> {
           _cutiList()
         ],
       ),
-    );
+    ));
   }
 
   Widget _cutiList() {
@@ -63,6 +78,8 @@ class _CutiScreenState extends State<CutiScreen> {
       } else {
         return noContent();
       }
+    } else if (!isExist && _isLoaderVisible) {
+      return Expanded(child: SizedBox());
     } else {
       return problemNetwork();
     }
@@ -81,7 +98,7 @@ class _CutiScreenState extends State<CutiScreen> {
     );
   }
 
-  Widget _getFAB(context) {
+  Widget _getFAB(BuildContext context) {
     if (isExist) {
       return FloatingActionButton(
           onPressed: () {
@@ -90,6 +107,19 @@ class _CutiScreenState extends State<CutiScreen> {
                 MaterialPageRoute(
                     builder: (context) => CutiAddScreen(sisaCuti: sisaCuti)));
           },
+          // onPressed: () async {
+          //   context.loaderOverlay.show();
+          //   setState(() {
+          //     _isLoaderVisible = context.loaderOverlay.visible;
+          //   });
+          //   await Future.delayed(Duration(seconds: 2));
+          //   if (_isLoaderVisible) {
+          //     context.loaderOverlay.hide();
+          //   }
+          //   setState(() {
+          //     _isLoaderVisible = context.loaderOverlay.visible;
+          //   });
+          // },
           backgroundColor: HexColor("#537FE7"),
           isExtended: false,
           child: Icon(

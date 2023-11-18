@@ -8,8 +8,8 @@ import 'package:tmshub/src/models/pegawai_model.dart';
 import 'package:tmshub/src/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// String urlAPI = 'http://192.168.1.4:8000/api';
-String urlAPI = 'http://10.10.10.71:8000/api';
+String urlAPI = 'http://192.168.1.9:8000/api';
+// String urlAPI = 'http://10.10.10.71:8000/api';
 
 // int userId = 0;
 
@@ -25,7 +25,6 @@ UserModel? userLogin = null;
 
 PegawaiModel? pegawaiLogin = null;
 
-
 Future<void> initializeGlobalsFromSharedPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   print("sharred preference active");
@@ -33,9 +32,13 @@ Future<void> initializeGlobalsFromSharedPreferences() async {
 
   // Menginisialisasi userLogin dari SharedPreferences
   String? userLoginJson = prefs.getString('userLogin');
-  userLogin = userLoginJson != null ? UserModel.fromJson(json.decode(userLoginJson)) : null;
+  userLogin = userLoginJson != null
+      ? UserModel.fromJson(json.decode(userLoginJson))
+      : null;
 
   // Menginisialisasi pegawaiLogin dari SharedPreferences
   String? pegawaiLoginJson = prefs.getString('pegawaiLogin');
-  pegawaiLogin = pegawaiLoginJson != null ? PegawaiModel.fromJson(json.decode(pegawaiLoginJson)) : null;
+  pegawaiLogin = pegawaiLoginJson != null
+      ? PegawaiModel.fromJson(json.decode(pegawaiLoginJson))
+      : null;
 }

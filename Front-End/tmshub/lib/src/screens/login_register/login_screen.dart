@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, avoid_print, unnecessary_new
 
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -250,23 +249,22 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  
-
   void checkLoginStatus() {
-  if (!globals.isLogin) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) {
-        return DashboardScreen();
-      }),
-    );
+    if (!globals.isLogin) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) {
+          return DashboardScreen();
+        }),
+      );
+    }
   }
-}
 
-  void updateSharredPreferencesLogin() async{
+  void updateSharredPreferencesLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     print(json.encode(globals.userLogin!.toJson()));
     prefs.setString("userLogin", json.encode(globals.userLogin!.toJson()));
-    prefs.setString("pegawaiLogin", json.encode(globals.pegawaiLogin!.toJson()));
+    prefs.setString(
+        "pegawaiLogin", json.encode(globals.pegawaiLogin!.toJson()));
     prefs.setBool("isLogin", true);
   }
 }

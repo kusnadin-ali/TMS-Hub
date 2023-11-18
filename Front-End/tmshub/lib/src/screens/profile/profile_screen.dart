@@ -1,14 +1,18 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/screens/profile/edit_password_screen.dart';
 import 'package:tmshub/src/screens/profile/edit_profil_screen.dart';
+import 'package:tmshub/src/screens/splash_screen.dart';
 import 'package:tmshub/src/services/pegawai_services.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
 class ProfileScreen extends StatefulWidget {
@@ -22,68 +26,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
   XFile? image;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: SingleChildScrollView(
-          child: Stack(
-            fit: StackFit.loose,
-            children: [
-              Container(
-                height: 210,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 75, 194, 255),
-                  image: DecorationImage(
-                    image: AssetImage('assets/background.png'),
-                    fit: BoxFit.fitWidth,
-                    colorFilter: ColorFilter.mode(
-                      const Color.fromARGB(255, 75, 194, 255),
-                      BlendMode.multiply,
-                    ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        heroTag: "fabcustom",
+        isExtended: true,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => EditProfilScreen()));
+        },
+        child: Image(
+          height: 40,
+          image: AssetImage("assets/edit-100.png"),
+          filterQuality: FilterQuality.high,
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Stack(
+          fit: StackFit.loose,
+          children: [
+            Container(
+              height: 210,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 75, 194, 255),
+                image: DecorationImage(
+                  image: AssetImage('assets/background.png'),
+                  fit: BoxFit.fitWidth,
+                  colorFilter: ColorFilter.mode(
+                    const Color.fromARGB(255, 75, 194, 255),
+                    BlendMode.multiply,
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: TopNavigation(
-                  title: "PROFIL",
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10, top: 10),
+              child: TopNavigation(
+                title: "PROFIL",
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 170),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: HexColor("#E5F1F8"),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40)),
+              ),
+              child: profilCard(),
+            ),
+            Align(
+              alignment: AlignmentDirectional.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(top: 100),
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundColor: HexColor("#E5F1F8"),
+                  child: CircleAvatar(
+                    radius: 65,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: NetworkImage(
+                        globals.urlAPI + globals.pegawaiLogin!.fotoProfil!),
+                  ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 170),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: HexColor("#E5F1F8"),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40)),
-                ),
-                child: profilCard(),
-              ),
-              Align(
+            ),
+            Align(
                 alignment: AlignmentDirectional.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 100),
-                  child: CircleAvatar(
-                    radius: 70,
-                    backgroundColor: HexColor("#E5F1F8"),
-                    child: CircleAvatar(
-                      radius: 65,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: NetworkImage(
-                          globals.urlAPI + globals.pegawaiLogin!.fotoProfil!),
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                  alignment: AlignmentDirectional.topCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 200, left: 100),
-                    child: modalPicture(),
-                  ))
-            ],
-          ),
+                  padding: EdgeInsets.only(top: 200, left: 100),
+                  child: modalPicture(),
+                ))
+          ],
         ),
       ),
     );
@@ -91,10 +111,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future getImage(ImageSource media) async {
     var imageFile = await picker.pickImage(source: media);
+    context.loaderOverlay.show();
     Map<String, String> request = {
       'id_pegawai': globals.pegawaiLogin!.idPegawai.toString(),
     };
-    changePictureAPI(request, imageFile).then((value) {
+    await changePictureAPI(request, imageFile).then((value) {
+      context.loaderOverlay.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -102,6 +124,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: "Berhasil",
               message: "Berhasil mengubah foto!",
               type: "success");
+        },
+      );
+    }).onError((error, stackTrace) {
+      context.loaderOverlay.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+              title: "Gagal Menyimpan",
+              message: error.toString(),
+              type: "failed");
         },
       );
     });
@@ -250,24 +283,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 15),
-            Align(
-                alignment: AlignmentDirectional.bottomEnd,
-                child: FloatingActionButton(
-                  heroTag: "fabcustom",
-                  isExtended: true,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EditProfilScreen()));
-                  },
-                  child: Image(
-                    height: 40,
-                    image: AssetImage("assets/edit-100.png"),
-                    filterQuality: FilterQuality.high,
+            SizedBox(height: 12),
+            SizedBox(
+              width: double.maxFinite,
+              height: 40,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () {
+                  _modalLogout();
+                },
+                child: Text(
+                  "Logout",
+                  style: TextStyle(
+                    fontFamily: "Montserrat",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: HexColor("#FFFFFF"),
                   ),
-                )),
+                ),
+              ),
+            ),
             SizedBox(height: 20),
           ],
         ));
@@ -307,5 +342,102 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SizedBox(height: 12),
       ],
     );
+  }
+
+  void _cleanSharredPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("userLogin", json.encode(null));
+    prefs.setString("pegawaiLogin", json.encode(null));
+    prefs.setBool("isLogin", false);
+  }
+
+  void _modalLogout() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: HexColor("#FFF8F3F3"),
+            shadowColor: HexColor("#7AE5F1F8"),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 300),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 36),
+                    Icon(
+                      Icons.logout_outlined,
+                      size: 100,
+                      color: Colors.red,
+                    ),
+                    SizedBox(height: 32),
+                    Text(
+                      "Apakah anda yakin ?",
+                      style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: HexColor("#994B465C"),
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                            fit: FlexFit.tight,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red.shade700),
+                              onPressed: () {
+                                _cleanSharredPreferences();
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SplashScreen()),
+                                    (Route route) => false);
+                              },
+                              child: Text(
+                                "Keluar",
+                                style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                        SizedBox(width: 10),
+                        Flexible(
+                            fit: FlexFit.tight,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Batal",
+                                style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ))
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

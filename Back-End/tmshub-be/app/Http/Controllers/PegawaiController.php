@@ -57,30 +57,6 @@ class PegawaiController extends Controller
         }
     }
 
-    // public function updateProfilePicture(Request $request, $userId)
-    // {
-    //     $this->validate($request, [
-    //         'foto_profil' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-    //     ]);
-    //     $pegawai = Pegawai::where('id_user', $userId)->first();
-    //     error_log($request);
-
-    //     if (!$pegawai) {
-    //         return response()->json(['message' => 'Pegawai tidak ditemukan'], 404);
-    //     }
-
-    //     if ($request->hasFile('foto_profil')) {
-    //         $fotoProfil = $request->file('foto_profil');
-    //         $fotoProfilData = file_get_contents($fotoProfil->getRealPath());
-
-    //         $pegawai->foto_profil = $fotoProfilData;
-    //         $pegawai->save();
-
-    //         return response()->json(['message' => 'Foto profil pegawai berhasil diperbarui'], 200);
-    //     }
-
-    //     return response()->json(['message' => 'Foto profil tidak ditemukan'], 400);
-    // }
     public function imageStore(Request $request)
     {
 
@@ -91,25 +67,13 @@ class PegawaiController extends Controller
             ]);
 
             $image = $request->file('image');
-            //saya ingin image diubah ke type data blob lalu nanti disimpan ke database Pegawai dengan index 1 
             $imageData = file_get_contents($image->getRealPath());
 
             // Simpan BLOB ke kolom 'foto_profil' di tabel 'Pegawai' dengan ID 1
             DB::table('pegawai')
-                ->where('id_pegawai', $request['id_pegawai']) // ID Pegawai yang sesuai (ID 1)
+                ->where('id_pegawai', $request['id_pegawai'])
                 ->update(['foto_profil' => $imageData]);
-
-            // // Menyimpan gambar di direktori public
-            // $image_path = $image->store('public/image');
-
-            // // Mengganti awalan 'public/' menjadi 'storage/'
-            // $image_path = str_replace('public/', 'storage/', $image_path);
-
-            // $data = Image::create([
-            //     'image' => $image_path,
-            // ]);
-
-            return response("Berhasil", Response::HTTP_CREATED);
+            return response(["message" => "Berhasil"], 200);
         } catch (Exception $e) {
             // Tangani pengecualian jika berkas tidak sesuai format
             return response("Gagal: " . $e->getMessage(), Response::HTTP_BAD_REQUEST);
