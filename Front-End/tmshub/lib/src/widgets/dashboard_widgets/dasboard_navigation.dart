@@ -77,17 +77,19 @@ class DasboardNavigationWidget extends StatelessWidget {
       IconData icon = Icons.abc,
       required BuildContext context,
       required Widget destination}) {
-    double fontSize = 13;
-    double iconSize = 50;
-    if (title.length > 9) {
-      fontSize = 12;
-    }
+    final double sizeWidth = MediaQuery.of(context).size.width;
+    double fontSize = sizeWidth/35;
+    double iconSize = sizeWidth/10;
+    double containerSize = sizeWidth/5.5;
     if (title.length > 10) {
-      fontSize = 10;
-      iconSize = 41;
-    }
+      fontSize = sizeWidth/38;
+      iconSize = sizeWidth/16;
+      containerSize = sizeWidth/4.5;
+    }else if (title.length > 9) {
+      fontSize = sizeWidth/39;
+    } 
     return Container(
-      width: 85,
+      width: containerSize,
       child: Material(
         color: Colors.transparent,
         child: InkWell(

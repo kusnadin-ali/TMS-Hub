@@ -24,10 +24,14 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePicker picker = ImagePicker();
   XFile? image;
+  ImageProvider<Object>? _pic;
+  String imageUrl = globals.urlAPI + globals.pegawaiLogin!.fotoProfil!;
 
   @override
   void initState() {
     super.initState();
+    _pic = NetworkImage(imageUrl+"?timestamp=${DateTime.now().millisecondsSinceEpoch}");
+    print("masuk");
   }
 
   @override
@@ -91,8 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: CircleAvatar(
                     radius: 65,
                     backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(
-                        globals.urlAPI + globals.pegawaiLogin!.fotoProfil!),
+                    backgroundImage:  _pic,
                   ),
                 ),
               ),
@@ -117,6 +120,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     };
     await changePictureAPI(request, imageFile).then((value) {
       context.loaderOverlay.hide();
+      print("object");
+      setState(() {});
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -126,6 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               type: "success");
         },
       );
+      _pic = NetworkImage(imageUrl+"?timestamp=${DateTime.now().millisecondsSinceEpoch}");
     }).onError((error, stackTrace) {
       context.loaderOverlay.hide();
       showDialog(

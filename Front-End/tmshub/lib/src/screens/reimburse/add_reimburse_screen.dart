@@ -31,6 +31,7 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
     namaController.text = globals.userLogin!.namaUser;
     dateController.text = "";
     imageController.text = "";
+    amountController.text = '0';
     super.initState();
   }
 
@@ -208,6 +209,9 @@ class _AddReimburseScreenState extends State<AddReimburseScreen> {
             decoration: InputDecoration(
               hintText: '${inputPlaceholder}',
               border: OutlineInputBorder(),
+              filled: true,
+              fillColor:
+                  isReadOnly ? HexColor("#80A8AAAE") : HexColor("#80FFFFFF"),
             ),
           ),
         ),
