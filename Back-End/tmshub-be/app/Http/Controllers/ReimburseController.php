@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -29,11 +30,11 @@ class ReimburseController extends Controller
             ->get()
             ->map(function ($reimburse) {
                 $reimburse['lampiran'] = '/reimburse/lampiran/' . $reimburse['id_reimburse'];
-                
-                if($reimburse['id_admin'] !=null){
+
+                if ($reimburse['id_admin'] != null) {
                     $user = User::find($reimburse['id_admin']);
                     $reimburse['nama_admin'] = $user->nama_user;
-                }else{
+                } else {
                     $reimburse['nama_admin'] = '-';
                 }
                 return $reimburse;
@@ -62,17 +63,50 @@ class ReimburseController extends Controller
         }
     }
 
+    // public function storeLampiranReimburseById(Request $request)
+    // {
+    //     error_log($request->image);
+    //     error_log($request->id_reimburse);
+
+    //     try {
+    //         $this->validate($request, [
+    //             'image' => 'required|file|mimes:jpg,png,jpeg,gif,svg|max:5120',
+    //         ]);
+
+    //         $image = $request->file('image');
+
+    //         // Menggunakan Intervention Image untuk memanipulasi gambar
+    //         $img = Image::make($image->getRealPath());
+
+    //         // Menyesuaikan ukuran gambar ke ukuran tetap
+    //         $img->fit(800, 800);
+
+    //         // Mengubah gambar menjadi data biner
+    //         $imageData = $img->encode();
+
+    //         DB::table('reimburse')
+    //             ->where('id_reimburse', $request->id_reimburse)
+    //             ->update(['lampiran' => $imageData]);
+
+    //         return response("Berhasil", Response::HTTP_CREATED);
+    //     } catch (Exception $e) {
+    //         // Tangani pengecualian jika berkas tidak sesuai format
+    //         return response("Gagal: " . $e->getMessage(), Response::HTTP_BAD_REQUEST);
+    //     }
+    // }
+
     public function storeLampiranReimburseById(Request $request)
     {
         error_log($request->image);
         try {
             $this->validate($request, [
-                'image' => 'required|file|mimes:jpg,png,jpeg,gif,svg|max:2048',
+                'image' => 'required|file|mimes:jpg,png,jpeg,gif,svg|max:5120',
             ]);
 
             $image = $request->file('image');
 
             $imageData = file_get_contents($image->getRealPath());
+            error_log($imageData);
 
             DB::table('reimburse')
                 ->where('id_reimburse', $request->id_reimburse)

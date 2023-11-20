@@ -32,7 +32,7 @@ Future<String> changePictureAPI(
 
   final response = await request.send();
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     return "Berhasil";
   } else {
     throw Exception('Gagal mengupload gambar');
