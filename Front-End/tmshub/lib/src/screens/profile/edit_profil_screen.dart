@@ -122,11 +122,12 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
   saveProfile() {
     context.loaderOverlay.show();
     Map<String, String> request = {
-      'id_user': globals.pegawaiLogin!.idPegawai.toString(),
+      'id_user': globals.userLogin!.idUser.toString(),
       'alamat_pegawai': alamatCont.text,
       'email_user': emailCont.text,
       'nohp_pegawai': nohpCont.text,
     };
+    print(request);
     updateProfilAPI(request).then((value) {
       _updateGlobalsVariable(alamatCont.text, emailCont.text, nohpCont.text);
       showDialog(

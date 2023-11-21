@@ -114,20 +114,22 @@ class PegawaiController extends Controller
     {
         $data = $request->validate([
             'id_user' => 'required|integer',
-            'alamat_pegawai' => 'required',
-            'email_user' => 'required|email',
-            'nohp_pegawai' => 'required',
+            'alamat_pegawai' => 'nullable',
+            'email_user' => 'nullable|email',
+            'nohp_pegawai' => 'nullable',
         ]);
-
+        error_log("testtt". $request);
         try {
             $pegawai = Pegawai::where('id_user', $data['id_user'])->update([
                 'alamat_pegawai' => $data['alamat_pegawai'],
                 'nohp_pegawai' => $data['nohp_pegawai'],
             ]);
-            $user = User::where('id_user', $data['id_user'])->update([
-                'email_user' => $data['email_user']
-            ]);
-
+            if($data['email_user']!=null){
+                $user = User::where('id_user', $data['id_user'])->update([
+                    'email_user' => $data['email_user']
+                ]);
+            }
+            error_log("testtt2");
             return response()->json(["message" => "Berhasil menyimpan profil"], 200);
         } catch (Exception $ex) {
             return response("Gagal: " . $ex->getMessage(), Response::HTTP_BAD_REQUEST);
