@@ -72,7 +72,7 @@ class DashboardScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.divisi! : '-'}',
+                                '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.divisi! : ' '}',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
@@ -81,7 +81,7 @@ class DashboardScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.nip : '-'}',
+                                '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.nip ?? ' ': ' '}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontFamily: 'Montserrat',

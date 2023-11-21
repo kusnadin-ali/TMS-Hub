@@ -249,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _itemDetail(
               tittle: "Alamat",
-              value: globals.pegawaiLogin!.alamatPegawai!,
+              value: globals.pegawaiLogin!.alamatPegawai??"-",
             ),
             _itemDetail(
               tittle: "Email",
@@ -257,15 +257,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _itemDetail(
               tittle: "No. Telepon",
-              value: globals.pegawaiLogin!.nohpPegawai!,
+              value: globals.pegawaiLogin!.nohpPegawai??"-",
             ),
             _itemDetail(
               tittle: "Divisi",
-              value: globals.pegawaiLogin!.divisi!,
+              value: globals.pegawaiLogin!.divisi??"-",
             ),
             _itemDetail(
               tittle: "Nomor Kepegawaian",
-              value: globals.pegawaiLogin!.nip!,
+              value: globals.pegawaiLogin!.nip??"-",
             ),
             SizedBox(height: 12),
             SizedBox(

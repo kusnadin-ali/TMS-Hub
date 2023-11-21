@@ -23,10 +23,10 @@ class EditProfilScreen extends StatefulWidget {
 class _EditProfilScreenState extends State<EditProfilScreen> {
   // dynamic temp;
   var alamatCont =
-      TextEditingController(text: globals.pegawaiLogin!.alamatPegawai!);
+      TextEditingController(text: globals.pegawaiLogin!.alamatPegawai??"-");
   var emailCont = TextEditingController(text: globals.userLogin!.emailUser);
   var nohpCont =
-      TextEditingController(text: globals.pegawaiLogin!.nohpPegawai!);
+      TextEditingController(text: globals.pegawaiLogin!.nohpPegawai??"-");
 
   @override
   void initState() {
@@ -105,12 +105,12 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
             ),
             _inputText(
               tittle: "Divisi",
-              initialValue: globals.pegawaiLogin!.divisi!,
+              initialValue: globals.pegawaiLogin!.divisi??"-",
               enabled: false,
             ),
             _inputText(
               tittle: "Nomor Kepegawaian",
-              initialValue: globals.pegawaiLogin!.nip!,
+              initialValue: globals.pegawaiLogin!.nip??"-",
               enabled: false,
             ),
           ],
