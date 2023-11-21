@@ -8,6 +8,7 @@ class PenggajianModel {
   final int idAdmin;
   final String namaAdmin;
   final String bonus;
+  final DateTime tanggal;
 
   PenggajianModel({
     required this.idPenggajian,
@@ -19,6 +20,7 @@ class PenggajianModel {
     required this.idAdmin,
     required this.namaAdmin,
     required this.bonus,
+    required this.tanggal
   });
 
   factory PenggajianModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class PenggajianModel {
       idAdmin: json['id_admin'],
       namaAdmin: json['nama_admin'],
       bonus: json['bonus'],
+      tanggal: DateTime.parse(json['tanggal'])
     );
   }
 
@@ -45,6 +48,7 @@ class PenggajianModel {
       'keterangan': keterangan,
       'nama_admin': namaAdmin,
       'bonus': bonus,
+      'tanggal': tanggal,
     };
   }
 }

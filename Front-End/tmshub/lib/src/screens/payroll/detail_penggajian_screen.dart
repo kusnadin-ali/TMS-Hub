@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:tmshub/src/models/penggajian_model.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 
@@ -67,6 +68,7 @@ class DetailPenggajianScreen extends StatelessWidget {
   }
 
   Widget tanggalWidget() {
+    String formattedDate = DateFormat('d MMMM y').format(penggajianModel.tanggal);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +97,7 @@ class DetailPenggajianScreen extends StatelessWidget {
               height: 5,
             ),
             Text(
-              "29 Jun 2019",
+              formattedDate,
               style: TextStyle(
                 color: HexColor("#6E6E6E"),
                 fontFamily: "Montserrat",

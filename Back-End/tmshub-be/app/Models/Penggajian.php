@@ -18,6 +18,7 @@ class Penggajian extends Model
         'status_gaji',
         'id_admin',
         'keterangan',
-        'bonus'
+        'bonus',
+        'tanggal'
     ];
 }
