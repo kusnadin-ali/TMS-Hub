@@ -37,19 +37,57 @@ class CutiController extends Controller {
     return response()->json($cuti, 200);
   }
 
+  // public function getAddData($userId)
+  // {
+  //   $cuti = Cuti::find($userId)->latest('tgl_mulai')->first();
+  //   error_log($cuti);
+  //   $user = Cuti::find($userId)->user;
+  //   $sisa_cuti = $cuti->sisa_cuti - 1;
+  //   if(Carbon::parse($cuti->tgl_mulai)->year != Carbon::now()->year)
+  //     $sisa_cuti = 10;
+
+  //   return response()->json([
+  //     'sisa_cuti' => $sisa_cuti,
+  //     'nama_user' => $user->nama_user
+  //   ]);
+  // }
   public function getAddData($userId)
-  {
-    $cuti = Cuti::find($userId)->latest('tgl_mulai')->first();
-    $user = Cuti::find($userId)->user;
-    $sisa_cuti = $cuti->sisa_cuti - 1;
-    if(Carbon::parse($cuti->tgl_mulai)->year != Carbon::now()->year)
-      $sisa_cuti = 10;
+{
+    // Find the Cuti record with the given $userId
+    $cuti = Cuti::find($userId);
+    $user = User::find($userId);
+    // Check if the $cuti is null
+    if ($cuti === null) {
+        // Handle the case where no record is found (you may want to return an error response or handle it according to your application logic)
+        return response()->json([
+          'sisa_cuti' => 10,
+          'nama_user' => $user->nama_user
+      ]);
+    }
+
+    // Use optional() to prevent calling latest() on null
+    $latestCuti = optional($cuti)->latest('tgl_mulai')->first();
+
+    // Check if the $latestCuti is null
+    if ($latestCuti === null) {
+        // Handle the case where no Cuti record is found for the user
+        return response()->json(['error' => 'No Cuti record found for the user'], 404);
+    }
+
+    // Continue with the rest of your logic
+    $user = $cuti->user;
+    $sisa_cuti = $latestCuti->sisa_cuti - 1;
+
+    if (Carbon::parse($latestCuti->tgl_mulai)->year != Carbon::now()->year) {
+        $sisa_cuti = 10;
+    }
 
     return response()->json([
-      'sisa_cuti' => $sisa_cuti,
-      'nama_user' => $user->nama_user
+        'sisa_cuti' => $sisa_cuti,
+        'nama_user' => $user->nama_user
     ]);
-  }
+}
+
 
   public function addCuti(Request $request)
   {
