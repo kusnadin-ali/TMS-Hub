@@ -26,11 +26,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   XFile? image;
   ImageProvider<Object>? _pic;
   String imageUrl = globals.urlAPI + globals.pegawaiLogin!.fotoProfil!;
+  bool isReload = true;
 
   @override
   void initState() {
     super.initState();
-    _pic = NetworkImage(imageUrl+"?timestamp=${DateTime.now().millisecondsSinceEpoch}");
+    _pic = NetworkImage(
+        imageUrl + "?timestamp=${DateTime.now().millisecondsSinceEpoch}");
     print("masuk");
   }
 
@@ -42,7 +44,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         isExtended: true,
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => EditProfilScreen()));
+                  MaterialPageRoute(builder: (context) => EditProfilScreen()))
+              .then((value) {
+            setState(() {});
+          });
         },
         child: Image(
           height: 40,
@@ -95,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: CircleAvatar(
                     radius: 65,
                     backgroundColor: Colors.transparent,
-                    backgroundImage:  _pic,
+                    backgroundImage: _pic,
                   ),
                 ),
               ),
@@ -131,7 +136,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               type: "success");
         },
       );
-      _pic = NetworkImage(imageUrl+"?timestamp=${DateTime.now().millisecondsSinceEpoch}");
+      _pic = NetworkImage(
+          imageUrl + "?timestamp=${DateTime.now().millisecondsSinceEpoch}");
     }).onError((error, stackTrace) {
       context.loaderOverlay.hide();
       showDialog(
@@ -249,7 +255,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _itemDetail(
               tittle: "Alamat",
-              value: globals.pegawaiLogin!.alamatPegawai??"-",
+              value: globals.pegawaiLogin!.alamatPegawai ?? "-",
             ),
             _itemDetail(
               tittle: "Email",
@@ -257,15 +263,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _itemDetail(
               tittle: "No. Telepon",
-              value: globals.pegawaiLogin!.nohpPegawai??"-",
+              value: globals.pegawaiLogin!.nohpPegawai ?? "-",
             ),
             _itemDetail(
               tittle: "Divisi",
-              value: globals.pegawaiLogin!.divisi??"-",
+              value: globals.pegawaiLogin!.divisi ?? "-",
             ),
             _itemDetail(
               tittle: "Nomor Kepegawaian",
-              value: globals.pegawaiLogin!.nip??"-",
+              value: globals.pegawaiLogin!.nip ?? "-",
             ),
             SizedBox(height: 12),
             SizedBox(

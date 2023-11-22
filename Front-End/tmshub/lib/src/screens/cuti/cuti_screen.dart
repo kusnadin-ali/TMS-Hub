@@ -105,21 +105,11 @@ class _CutiScreenState extends State<CutiScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CutiAddScreen(sisaCuti: sisaCuti)));
+                    builder: (context) =>
+                        CutiAddScreen(sisaCuti: sisaCuti))).then((value) {
+              setState(() {});
+            });
           },
-          // onPressed: () async {
-          //   context.loaderOverlay.show();
-          //   setState(() {
-          //     _isLoaderVisible = context.loaderOverlay.visible;
-          //   });
-          //   await Future.delayed(Duration(seconds: 2));
-          //   if (_isLoaderVisible) {
-          //     context.loaderOverlay.hide();
-          //   }
-          //   setState(() {
-          //     _isLoaderVisible = context.loaderOverlay.visible;
-          //   });
-          // },
           backgroundColor: HexColor("#537FE7"),
           isExtended: false,
           child: Icon(

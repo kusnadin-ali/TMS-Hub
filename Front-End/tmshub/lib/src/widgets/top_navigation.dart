@@ -23,7 +23,7 @@ class TopNavigation extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.of(context).pop(true);
                   },
                   child: Ink(
                     decoration: BoxDecoration(

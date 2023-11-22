@@ -8,14 +8,18 @@ import 'package:tmshub/src/widgets/dashboard_widgets/dasboard_navigation.dart';
 import 'package:tmshub/src/widgets/dashboard_widgets/visi_misi_card.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     print("dipanggil");
     return WillPopScope(
       onWillPop: () async {
-        // Jika tombol "back" ditekan di dashboard, keluar dari aplikasi
-        SystemNavigator.pop(); // Ini akan keluar dari aplikasi
+        SystemNavigator.pop();
         return false;
       },
       child: Scaffold(
@@ -81,7 +85,7 @@ class DashboardScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.nip ?? ' ': ' '}',
+                                '${globals.pegawaiLogin != null ? globals.pegawaiLogin!.nip ?? ' ' : ' '}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontFamily: 'Montserrat',
@@ -114,7 +118,9 @@ class DashboardScreen extends StatelessWidget {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(builder: (context) {
                                         return ProfileScreen();
-                                      }));
+                                      })).then((value) {
+                                        setState(() {});
+                                      });
                                     },
                                   ),
                                 ),

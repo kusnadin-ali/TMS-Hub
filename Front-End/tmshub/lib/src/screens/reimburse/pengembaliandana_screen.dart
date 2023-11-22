@@ -42,7 +42,9 @@ class _PengembalianDanaScreenState extends State<PengembalianDanaScreen> {
           print("object");
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return AddReimburseScreen();
-          }));
+          })).then((value) {
+            setState(() {});
+          });
         },
         tooltip: 'Add Reimburse',
         child: const Icon(Icons.add),
