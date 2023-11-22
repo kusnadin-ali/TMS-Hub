@@ -53,7 +53,7 @@ Future<Map<String, dynamic>> saveCutiAPI(Map<String, dynamic> request) async {
     body: jsonEncode(request),
   );
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
     return jsonResponse;
   } else {

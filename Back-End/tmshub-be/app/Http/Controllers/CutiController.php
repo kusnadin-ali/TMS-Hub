@@ -119,7 +119,7 @@ class CutiController extends Controller {
         'status_cuti' => 'PENDING',
       ]);
       $newCuti['message'] = "Berhasil menambahkan cuti";
-      return response()->json($newCuti);
+      return response()->json($newCuti, 201);
     }catch(Exception $ex){
       return response()->json(["message" => $ex->getMessage()], Response::HTTP_BAD_REQUEST);
     }
