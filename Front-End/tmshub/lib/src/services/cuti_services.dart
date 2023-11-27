@@ -36,7 +36,7 @@ Future<Map<String, dynamic>> getSisaCuti(int userId) async {
   final response =
       await http.get(Uri.parse('${globals.urlAPI}/cuti-sisa/$userId'));
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
     return jsonResponse;
   } else {

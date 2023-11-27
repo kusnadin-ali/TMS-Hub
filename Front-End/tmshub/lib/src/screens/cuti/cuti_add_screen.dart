@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tmshub/src/models/cuti_model.dart';
 import 'package:tmshub/src/services/cuti_services.dart';
 import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
@@ -331,6 +332,7 @@ class _CutiAddState extends State<CutiAddScreen> {
   }
 
   saveCuti() {
+    context.loaderOverlay.show();
     Map<String, String> request = {
       "id_user": globals.userLogin!.idUser.toString(),
       "tgl_mulai": parseDateInput(startDateCont.text),
@@ -339,6 +341,8 @@ class _CutiAddState extends State<CutiAddScreen> {
       "keterangan": keteranganCont.text
     };
     saveCutiAPI(request).then((response) {
+      Navigator.pop(context, true);
+      context.loaderOverlay.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -350,6 +354,7 @@ class _CutiAddState extends State<CutiAddScreen> {
         },
       );
     }).onError((error, stackTrace) {
+      context.loaderOverlay.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) {

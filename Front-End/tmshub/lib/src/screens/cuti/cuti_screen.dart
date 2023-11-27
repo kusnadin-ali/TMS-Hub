@@ -101,13 +101,15 @@ class _CutiScreenState extends State<CutiScreen> {
   Widget _getFAB(BuildContext context) {
     if (isExist) {
       return FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            await Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
                         CutiAddScreen(sisaCuti: sisaCuti))).then((value) {
-              setState(() {});
+              if (value == true) {
+                _getCuti();
+              }
             });
           },
           backgroundColor: HexColor("#537FE7"),
