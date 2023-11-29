@@ -87,7 +87,7 @@ class PegawaiController extends Controller
         try {
             $this->validate($request, [
                 'id_pegawai' => 'required|integer',
-                'image' => 'required|file|mimes:jpg,png,jpeg,gif,svg|max:2048',
+                'image' => 'required|file|mimes:jpg,png,jpeg,gif,svg|max:10000',
             ]);
 
             $image = $request->file('image');
