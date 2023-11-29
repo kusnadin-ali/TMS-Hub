@@ -102,7 +102,7 @@ class CutiDetailScreen extends StatelessWidget {
                       SizedBox(height: 18),
                       cutiDetailCard(
                           tittle: "Sisa Cuti",
-                          content: cuti.sisaCuti,
+                          content: cuti.sisaCuti == null ? "-" : cuti.sisaCuti!,
                           icon: Icons.calendar_today),
                     ],
                   ),

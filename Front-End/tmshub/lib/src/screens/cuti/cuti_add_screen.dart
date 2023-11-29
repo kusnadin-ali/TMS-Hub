@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -24,6 +24,8 @@ class _CutiAddState extends State<CutiAddScreen> {
   TextEditingController endDateCont = TextEditingController();
   TextEditingController keteranganCont = TextEditingController();
 
+  bool isEnabled = false;
+
   @override
   void initState() {
     startDateCont.text = '';
@@ -43,7 +45,9 @@ class _CutiAddState extends State<CutiAddScreen> {
               backgroundColor: HexColor("#537FE7"),
               foregroundColor: Colors.white),
           onPressed: () {
-            saveCuti();
+            if (isEnabled) {
+              saveCuti();
+            }
           },
           child: Text("Kirim"),
         ),
@@ -111,6 +115,7 @@ class _CutiAddState extends State<CutiAddScreen> {
                         setState(() {
                           startDateCont.text =
                               DateFormat("d MMMM y").format(temp);
+                          endDateCont.text = "";
                         });
                       },
                       readOnly: true,
@@ -147,10 +152,27 @@ class _CutiAddState extends State<CutiAddScreen> {
                       controller: endDateCont,
                       onTap: () async {
                         var temp = await _pickDate(context);
+                        print("beda1 ${diffOfDate(startDateCont.text, temp)}");
                         if (temp == null) return;
+                        // to.difference(from).inHours / 24).round()
+                        if (diffOfDate(startDateCont.text, temp) >
+                            widget.sisaCuti!.sisaCuti) {
+                          return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(
+                                title: "Sisa Cuti Melebihi Batas",
+                                message:
+                                    "sisa cuti dalam hari melebihi kuota cuti yang tersisa",
+                                type: "failed",
+                              );
+                            },
+                          );
+                        }
                         setState(() {
                           endDateCont.text =
                               DateFormat("d MMMM y").format(temp);
+                          isEnabled = true;
                         });
                       },
                       readOnly: true,
@@ -314,7 +336,7 @@ class _CutiAddState extends State<CutiAddScreen> {
       context: context,
       initialDate: now,
       firstDate: DateTime(now.year - 1),
-      lastDate: DateTime(now.year + 5),
+      lastDate: DateTime(now.year + 1),
     );
     return newDate;
   }
@@ -325,6 +347,18 @@ class _CutiAddState extends State<CutiAddScreen> {
         _jenisCuti = selectedValue;
       });
     }
+  }
+
+  int diffOfDate(String start, DateTime end) {
+    // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime from = DateFormat('d MMMM y').parse(start);
+    DateTime to = end;
+    return (to.difference(from).inHours / 24).round() + 1;
+    // String _start =
+    //     DateFormat('yyyy-MM-dd').format(DateFormat('d MMMM y').parse(start));
+    // String _end =
+    //     DateFormat('yyyy-MM-dd').format(DateFormat('d MMMM y').);
+    // return int.parse(_start) - int.parse(_end);
   }
 
   String parseDateInput(String input) {

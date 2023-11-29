@@ -7,6 +7,7 @@ import 'package:tmshub/src/models/cuti_model.dart';
 import 'package:tmshub/src/screens/cuti/cuti_add_screen.dart';
 import 'package:tmshub/src/services/cuti_services.dart';
 import 'package:tmshub/src/widgets/cuti_widgets/cuti_card.dart';
+import 'package:tmshub/src/widgets/modal/custom_dialog.dart';
 import 'package:tmshub/src/widgets/top_navigation.dart';
 import 'package:tmshub/src/widgets/utility.dart';
 import 'package:tmshub/src/utils/globals.dart' as globals;
@@ -40,13 +41,25 @@ class _CutiScreenState extends State<CutiScreen> {
         listCuti = value;
         isExist = true;
       });
+    }).onError((error, stackTrace) {
+      context.loaderOverlay.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+            title: "Gagal Memuat Cuti",
+            message: error.toString(),
+            type: "failed",
+          );
+        },
+      );
     });
     await getSisaCuti(globals.userLogin!.idUser).then((value) => {
           setState(() {
             sisaCuti = CutiSisaModel(
-              namaUser: value['nama_user'],
-              sisaCuti: value['sisa_cuti'],
-            );
+                namaUser: value['nama_user'],
+                sisaCuti: value['sisa_cuti'],
+                enabled: value['enabled']);
           })
         });
     context.loaderOverlay.hide();
@@ -102,15 +115,28 @@ class _CutiScreenState extends State<CutiScreen> {
     if (isExist) {
       return FloatingActionButton(
           onPressed: () async {
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        CutiAddScreen(sisaCuti: sisaCuti))).then((value) {
-              if (value == true) {
-                _getCuti();
-              }
-            });
+            if (!sisaCuti!.enabled) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog(
+                    title: "Tidak Dapat Menambah Cuti",
+                    message: "Masih terdapat cuti dengan status pending",
+                    type: "failed",
+                  );
+                },
+              );
+            } else {
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CutiAddScreen(sisaCuti: sisaCuti))).then((value) {
+                if (value == true) {
+                  _getCuti();
+                }
+              });
+            }
           },
           backgroundColor: HexColor("#537FE7"),
           isExtended: false,

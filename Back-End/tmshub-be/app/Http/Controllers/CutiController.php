@@ -5,28 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Cuti;
 use App\Models\User;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
 
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
-
 class CutiController extends Controller {
   public function findByUser($userId)
   {
+    try {
     $cuti = Cuti::addSelect(['admin' => User::select('nama_user')
       ->whereColumn('id_user', 'cuti.id_admin')
       ->limit(1)]
       )->where('id_user', $userId)->get();
 
-      foreach($cuti as $data){
-        if(!$data['admin']){
-          $data['admin'] = "-";
-        }
-      };
+    foreach($cuti as $data){
+      if(!$data['admin']){
+        $data['admin'] = "-";
+      }
+    };
 
-      return response()->json($cuti, 200);
+    return response()->json($cuti, 201);
+    } catch(Exception $ex){
+      return response()->json(["message" => $ex->getMessage()], 404);
+    }
   }
 
   public function getDetailCuti($cutiId)
@@ -37,61 +39,41 @@ class CutiController extends Controller {
     }else{
       $cuti['admin'] = Cuti::find($cutiId)->admin->nama_user;
     }
-    return response()->json($cuti, 200);
+    return response()->json($cuti, 201);
   }
 
-  // public function getAddData($userId)
-  // {
-  //   $cuti = Cuti::find($userId)->latest('tgl_mulai')->first();
-  //   error_log($cuti);
-  //   $user = Cuti::find($userId)->user;
-  //   $sisa_cuti = $cuti->sisa_cuti - 1;
-  //   if(Carbon::parse($cuti->tgl_mulai)->year != Carbon::now()->year)
-  //     $sisa_cuti = 10;
-
-  //   return response()->json([
-  //     'sisa_cuti' => $sisa_cuti,
-  //     'nama_user' => $user->nama_user
-  //   ]);
-  // }
   public function getAddData($userId)
-{
-    // Find the Cuti record with the given $userId
+  {
     $cuti = Cuti::where("id_user", $userId)->first();
     $user = User::find($userId);
-    // Check if the $cuti is null
-    // dd([$cuti,$user]);
-    if ($cuti === null) {
-        // Handle the case where no record is found (you may want to return an error response or handle it according to your application logic)
-        return response()->json([
-          'sisa_cuti' => 10,
-          'nama_user' => $user->nama_user
+    $latestCuti = Cuti::where("id_user", $userId)->where("status_cuti", "DISETUJUI")->latest('tgl_mulai')->first();
+    
+    if ($cuti == null || $latestCuti == null) {
+      return response()->json([
+        'sisa_cuti' => 10,
+        'nama_user' => $user->nama_user,
+        'enabled' => true
       ], 201);
     }
 
-    // Use optional() to prevent calling latest() on null
-    $latestCuti = Cuti::where("id_user", $userId)->latest('tgl_mulai')->first();
-    // dd($latestCuti);
-
-    // Check if the $latestCuti is null
-    if ($latestCuti === null) {
-        // Handle the case where no Cuti record is found for the user
-        return response()->json(['error' => 'No Cuti record found for the user'], 404);
+    $sisa_cuti = $latestCuti->sisa_cuti;
+    if (Carbon::parse($latestCuti->tgl_mulai)->year != Carbon::now()->year) {
+      $sisa_cuti = 10;
     }
 
-    // Continue with the rest of your logic
-    $sisa_cuti = $latestCuti->sisa_cuti - 1;
-
-    if (Carbon::parse($latestCuti->tgl_mulai)->year != Carbon::now()->year) {
-        $sisa_cuti = 10;
+    $sisa = Cuti::where("id_user", $userId)->where("status_cuti", "PENDING")->first();
+    if($sisa != null){
+      $enabled = false;
+    } else {
+      $enabled = true;
     }
 
     return response()->json([
-        'sisa_cuti' => $sisa_cuti,
-        'nama_user' => $user->nama_user
+      'sisa_cuti' => (int)$sisa_cuti,
+      'nama_user' => $user->nama_user,
+      'enabled' => $enabled
     ], 201);
-}
-
+  }
 
   public function addCuti(Request $request)
   {
@@ -103,17 +85,6 @@ class CutiController extends Controller {
       'keterangan' => 'required',
     ]);
     
-    $cuti = Cuti::where('id_user', $request->id_user)->latest('tgl_mulai')->first();
-
-    //cek apakah belum pernah request cuti atau berbeda tahun
-    if( $cuti == null || Carbon::parse($cuti->tgl_mulai)->year != Carbon::now()->year){
-      $sisa_cuti = 10;
-    }else if($cuti->sisa_cuti - 1 < 0){ // cek apakah sisa cuti habis
-      return response()->json(["message" => "Sisa cuti habis"], 404);
-    } else {
-      $sisa_cuti = $cuti->sisa_cuti-1;
-    }
-
     try {
       $newCuti = Cuti::create([
         'id_user' => $request->id_user,
@@ -121,7 +92,7 @@ class CutiController extends Controller {
         'tgl_akhir' => $request->tgl_akhir,
         'jenis_cuti' => $request->jenis_cuti,
         'keterangan' => $request->keterangan,
-        'sisa_cuti' => $sisa_cuti,
+        'sisa_cuti' => null,
         'status_cuti' => 'PENDING',
       ]);
       $newCuti['message'] = "Berhasil menambahkan cuti";

@@ -5,7 +5,7 @@ class CutiModel {
   final String tglSelesai;
   final String jenisCuti;
   final String keterangan;
-  final String sisaCuti;
+  final String? sisaCuti;
   final String statusCuti;
   final int? idAdmin;
   final String admin;
@@ -54,13 +54,16 @@ class CutiModel {
 class CutiSisaModel {
   final String namaUser;
   final int sisaCuti;
+  final bool enabled;
 
-  CutiSisaModel({required this.namaUser, required this.sisaCuti});
+  CutiSisaModel(
+      {required this.namaUser, required this.sisaCuti, required this.enabled});
 
   factory CutiSisaModel.fromJson(Map<String, dynamic> json) {
     return CutiSisaModel(
       namaUser: json['nama_user'],
       sisaCuti: json['sisa_cuti'],
+      enabled: json['enabled'],
     );
   }
 }

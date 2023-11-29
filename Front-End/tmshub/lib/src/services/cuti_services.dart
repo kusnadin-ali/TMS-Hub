@@ -11,7 +11,7 @@ Future<List<CutiModel>> getCutiByUserAPI(int userId) async {
   final List<Map<String, dynamic>> jsonMap =
       jsonResponse.cast<Map<String, dynamic>>();
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     return jsonMap.map((e) => CutiModel.fromJson(e)).toList();
   } else {
     throw Exception('Failed to load Cuti');
@@ -25,7 +25,7 @@ Future<List<CutiModel>> getCutiById(int cutiId) async {
   final List<Map<String, dynamic>> jsonMap =
       jsonResponse.cast<Map<String, dynamic>>();
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     return jsonMap.map((e) => CutiModel.fromJson(e)).toList();
   } else {
     throw Exception('Failed to load Cuti');
